@@ -11,11 +11,13 @@ void CEngineCore::Init(const InitParams &aInitParams)
 	switch(aInitParams.Mode)
 	{
 	case Mode::ListenServer:
-		mpExecMode = 
+		//mpExecMode = 
+		break;
 	case Mode::DedicatedServer:
-		mpExecMode =
+		//mpExecMode =
+		break;
 	case Mode::DedicatedClient:
-		mpExecMode =
+		//mpExecMode =
 		break;
 	};
 	
@@ -29,5 +31,15 @@ void CEngineCore::Shutdown()
 
 void CEngineCore::Frame()
 {
-	mpExecMode->Frame();
+	if(!mbShouldStop)
+		mpExecMode->Frame();
+};
+
+void CEngineCore::Stop()
+{
+	mbShouldStop = true;
+};
+
+void CEngineCore::SendCmd(const char *asText)
+{
 };

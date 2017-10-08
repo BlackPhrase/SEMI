@@ -3,6 +3,9 @@
 ///
 struct IEngineCore
 {
+	/// Interface version
+	static constexpr auto Version{1};
+	
 	///
 	enum class Mode : int
 	{
@@ -25,4 +28,12 @@ struct IEngineCore
 	
 	///
 	virtual void Frame() = 0;
+	
+	///
+	virtual void Stop() = 0;
+	
+	///
+	virtual void SendCmd(const char *asText) = 0;
 };
+
+using pfnGetEngineCore = IEngineCore *(*)(int version);
