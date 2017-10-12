@@ -17,7 +17,7 @@ struct IEngineCore
 	///
 	struct InitParams
 	{
-		Mode eMode{Mode::ListenServer}; ///<
+		Mode ExecMode{Mode::ListenServer}; ///<
 	};
 	
 	///

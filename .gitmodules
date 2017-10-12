@@ -1,0 +1,3 @@
+[submodule "shiftutil"]
+	path = external/shiftutil
+	url = https://github.com/Sh1ft0x0EF/shiftutil

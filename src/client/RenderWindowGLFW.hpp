@@ -1,28 +1,30 @@
 #pragma once
 
+#include "IRenderWindow.hpp"
+
 typedef struct GLFWwindow GLFWwindow;
 
-class CRenderWindowGLFW final
+class CRenderWindowGLFW final : public IRenderWindow
 {
 public:
 	CRenderWindowGLFW();
 	~CRenderWindowGLFW();
 	
-	bool Init(int width, int height, const char *title);
-	void Shutdown();
+	bool Init(int width, int height, const char *title) override;
+	void Shutdown() override;
 	
-	void Update();
+	void Update() override;
 	
-	void SetSize(int width, int height);
+	void SetSize(int width, int height) override;
 	//GetSize() const;
 	
-	void SetPos(int x, int y);
+	void SetPos(int x, int y) override;
 	//GetPos() const;
 	
-	void SetTitle(const char *title);
-	const char *GetTitle() const;
+	void SetTitle(const char *title) override;
+	const char *GetTitle() const override;
 	
-	bool WantClose() const;
+	bool WantClose() const override;
 private:
 	GLFWwindow *mpWindow{nullptr};
 };
