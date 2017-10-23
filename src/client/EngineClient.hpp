@@ -15,6 +15,8 @@ public:
 	void Shutdown() override;
 	
 	void Frame() override;
+	
+	INetClient *GetLocaClient() override;
 private:
 	std::unique_ptr<CRenderWindowGLFW> mpMainWindow;
 };

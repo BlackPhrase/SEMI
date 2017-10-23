@@ -1,6 +1,7 @@
 #pragma once
 
 struct IEngineCore;
+struct INetClient;
 
 struct IEngineClient
 {
@@ -15,6 +16,9 @@ struct IEngineClient
 	
 	///
 	virtual void Frame() = 0;
+	
+	///
+	virtual INetClient *GetLocalClient() const = 0;
 };
 
 using pfnGetEngineClient = IEngineClient *(*)(int version);

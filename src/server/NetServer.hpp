@@ -13,5 +13,7 @@ public:
 	
 	IClient *GetClientByID(int index) const;
 private:
+	int FindFreeSlot() const;
+	
 	tClientVec mvClients;
 };
