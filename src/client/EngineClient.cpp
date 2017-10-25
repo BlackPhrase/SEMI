@@ -10,7 +10,7 @@ void CEngineClient::Init(IEngineCore *apCore)
 {
 	mpCore = apCore;
 	
-	mpMainWindow = std::make_unique<CRenderWindowGLFW>();
+	mpMainWindow = std::make_unique<CRenderWindowGLFW>(); // TODO: Use IRenderWindow interface
 	
 	if(!mpMainWindow->Init(1280, 600, "V-Engine"))
 		exit(EXIT_FAILURE); // std::runtime_error("Failed to initialize the main window!");
