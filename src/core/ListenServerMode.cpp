@@ -1,12 +1,14 @@
 #include "ListenServerMode.hpp"
+#include "DedicatedServerMode.hpp"
+#include "DedicatedClientMode.hpp"
 
-CListenServerMode::CListenServerMode() = default;
+//CListenServerMode::CListenServerMode() = default;
 CListenServerMode::~CListenServerMode() = default;
 
-void CListenServerMode::Init()
+void CListenServerMode::Init(IEngineCore *apCore)
 {
-	mpDedicatedServer->Init();
-	mpDedicatedClient->Init();
+	mpDedicatedServer->Init(apCore);
+	mpDedicatedClient->Init(apCore);
 };
 
 void CListenServerMode::Shutdown()

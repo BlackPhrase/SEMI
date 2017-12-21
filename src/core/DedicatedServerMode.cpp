@@ -1,13 +1,15 @@
 #include "DedicatedServerMode.hpp"
+#include "ModuleLoader.hpp"
+#include "vengine/IEngineServer.hpp"
 
 CDedicatedServerMode::CDedicatedServerMode() = default;
 CDedicatedServerMode::~CDedicatedServerMode() = default;
 
-void CDedicatedServerMode::Init()
+void CDedicatedServerMode::Init(IEngineCore *apCore)
 {
-	EngServerModule = ModuleLoader->LoadModule("VEngineServer");
+	auto EngServerModule{CModuleLoader::LoadModule("VEngineServer")};
 	
-	EngServerFactory = EngServerModule->GetFactory();
+	auto EngServerFactory{EngServerModule->GetFactory()};
 	
 	mpEngServer = EngServerFactory->GetInterface<IEngineServer>(IEngineServer::Version);
 	

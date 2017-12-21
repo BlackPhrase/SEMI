@@ -10,7 +10,7 @@ public:
 	CDedicatedClientMode();
 	~CDedicatedClientMode();
 	
-	void Init() override;
+	void Init(IEngineCore *apCore) override;
 	void Shutdown() override;
 	
 	void Frame() override;

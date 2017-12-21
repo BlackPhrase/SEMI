@@ -10,7 +10,7 @@ public:
 	CDedicatedServerMode();
 	~CDedicatedServerMode();
 	
-	void Init() override;
+	void Init(IEngineCore *apCore) override;
 	void Shutdown() override;
 	
 	void Frame() override;

@@ -7,10 +7,10 @@ struct IEngineExecStrategy;
 class CEngineCore final : public IEngineCore
 {
 public:
-	CEngineCore(const InitParams &aInitParams);
+	CEngineCore();
 	~CEngineCore();
 	
-	void Init() override;
+	void Init(const IEngineCore::InitParams &aInitParams) override;
 	void Shutdown() override;
 	
 	void Frame() override;

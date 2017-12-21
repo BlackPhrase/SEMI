@@ -1,14 +1,17 @@
 #pragma once
 
-struct IEngineModule;
+#include <string>
+#include "vengine/IEngineModule.hpp"
+
+//struct IEngineModule;
 
 class CModuleLoader final
 {
 public:
-	CModuleLoader();
-	~CModuleLoader();
+	//CModuleLoader();
+	//~CModuleLoader();
 	
-	IEngineModule *LoadModule(const std::string &name)
+	static IEngineModule *LoadModule(const std::string &name)
 	{
 		return nullptr;
 	};

@@ -6,9 +6,9 @@
 CEngineCore::CEngineCore() = default;
 CEngineCore::~CEngineCore() = default;
 
-void CEngineCore::Init(const InitParams &aInitParams)
+void CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 {
-	switch(aInitParams.Mode)
+	switch(aInitParams.ExecMode)
 	{
 	case Mode::ListenServer:
 		//mpExecMode = 
@@ -21,7 +21,7 @@ void CEngineCore::Init(const InitParams &aInitParams)
 		break;
 	};
 	
-	mpExecMode->Init();
+	mpExecMode->Init(this);
 };
 
 void CEngineCore::Shutdown()

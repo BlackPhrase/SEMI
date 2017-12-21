@@ -1,17 +1,19 @@
 #include "DedicatedClientMode.hpp"
+#include "ModuleLoader.hpp"
+#include "vengine/IEngineClient.hpp"
 
 CDedicatedClientMode::CDedicatedClientMode() = default;
 CDedicatedClientMode::~CDedicatedClientMode() = default;
 
-void CDedicatedClientMode::Init()
+void CDedicatedClientMode::Init(IEngineCore *apCore)
 {
-	EngClientModule = ModuleLoader->LoadModule("VEngineClient");
+	auto EngClientModule{CModuleLoader::LoadModule("VEngineClient")};
 	
-	EngClientFactory = EngClientModule->GetFactory();
+	auto EngClientFactory{EngClientModule->GetFactory()};
 	
 	mpEngClient = EngClientFactory->GetInterface<IEngineClient>(IEngineClient::Version);
 	
-	mpEngClient->Init();
+	mpEngClient->Init(apCore);
 };
 
 void CDedicatedClientMode::Shutdown()
