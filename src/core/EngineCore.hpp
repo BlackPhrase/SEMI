@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "vengine/IEngineCore.hpp"
 
 struct IEngineExecStrategy;
@@ -19,7 +20,7 @@ public:
 	
 	void SendCmd(const char *asText) override;
 private:
-	IEngineExecStrategy *mpExecMode{nullptr};
+	std::unique_ptr<IEngineExecStrategy> mpExecMode;
 	
 	bool mbShouldStop{false};
 };
