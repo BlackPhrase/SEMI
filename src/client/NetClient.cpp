@@ -8,7 +8,7 @@ bool CNetClient::Connect(const char *hostname)
 	return false;
 };
 
-void CNetClient::Disconnect()
+void CNetClient::Disconnect(const char *reason, ...)
 {
 };
 

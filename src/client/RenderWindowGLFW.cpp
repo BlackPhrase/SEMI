@@ -66,17 +66,17 @@ void CRenderWindowGLFW::Update()
 
 void CRenderWindowGLFW::SetSize(int width, int height)
 {
-	glfwWindowSetSize(mpWindow, width, height);
+	glfwSetWindowSize(mpWindow, width, height);
 };
 
 void CRenderWindowGLFW::SetPos(int x, int y)
 {
-	glfwWindowSetPos(mpWindow, x, y);
+	glfwSetWindowPos(mpWindow, x, y);
 };
 
 void CRenderWindowGLFW::SetTitle(const char *title)
 {
-	glfwWindowSetTitle(mpWindow, title);
+	glfwSetWindowTitle(mpWindow, title);
 };
 
 const char *CRenderWindowGLFW::GetTitle() const

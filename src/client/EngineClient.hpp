@@ -16,7 +16,9 @@ public:
 	
 	void Frame() override;
 	
-	INetClient *GetLocalClient() override;
+	INetClient *GetLocalClient() const override {return nullptr;}
 private:
 	std::unique_ptr<CRenderWindowGLFW> mpMainWindow;
+	
+	IEngineCore *mpCore{nullptr};
 };

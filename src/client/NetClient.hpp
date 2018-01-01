@@ -2,7 +2,7 @@
 
 #include "vengine/INetClient.hpp"
 
-class CNetClient final : public INetAdr
+class CNetClient final : public INetClient
 {
 public:
 	CNetClient();

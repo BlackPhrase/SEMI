@@ -21,7 +21,7 @@ struct IRenderWindow
 	virtual void SetTitle(const char *title) = 0;
 	
 	///
-	const char *GetTitle() const = 0;
+	virtual const char *GetTitle() const = 0;
 	
 	///
 	virtual bool WantClose() const = 0;
