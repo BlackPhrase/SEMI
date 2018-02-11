@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IEngineExecStrategy.hpp"
+#include "IEngineExecMode.hpp"
 
 struct IEngineClient;
 
-class CDedicatedClientMode final : public IEngineExecStrategy
+class CDedicatedClientMode final : public IEngineExecMode
 {
 public:
 	CDedicatedClientMode();
@@ -13,7 +13,7 @@ public:
 	void Init(IEngineCore *apCore) override;
 	void Shutdown() override;
 	
-	void Frame() override;
+	void Frame(float afTimeStep) override;
 private:
 	IEngineClient *mpEngClient{nullptr};
 };

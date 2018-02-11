@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include "EngineCore.hpp"
+//#include "Timer.hpp"
 #include "vengine/IEngineServer.hpp"
 #include "vengine/IEngineClient.hpp"
 
@@ -10,8 +11,12 @@
 CEngineCore::CEngineCore() = default;
 CEngineCore::~CEngineCore() = default;
 
-void CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
+bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 {
+	//using namespace std::chrono_literals;
+	
+	//mpTimer = std::make_unique<CTimer>(500ms);
+	
 	switch(aInitParams.ExecMode)
 	{
 	case Mode::ListenServer:
@@ -26,6 +31,10 @@ void CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	};
 	
 	mpExecMode->Init(this);
+	
+	//mpTimer->SetCallback([this](){mpExecMode->Frame();});
+	
+	return true;
 };
 
 void CEngineCore::Shutdown()
@@ -33,10 +42,30 @@ void CEngineCore::Shutdown()
 	mpExecMode->Shutdown();
 };
 
-void CEngineCore::Frame()
+bool CEngineCore::Frame()
 {
 	if(!mbShouldStop)
-		mpExecMode->Frame();
+	{
+		//mpExecMode->FrameBegin();
+		
+		//mpTimer->Tick();
+		
+		//if(mpTimer->WantUpdate())
+		//{
+			//mpExecMode->Frame();
+		//};
+		
+		//mpExecMode->HandleInput();
+		
+		mpExecMode->Frame(0.1f);
+		
+		//mpExecMode->Render();
+		
+		//mpExecMode->FrameEnd();
+		return true;
+	};
+	
+	return false;
 };
 
 void CEngineCore::Stop()

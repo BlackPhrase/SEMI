@@ -1,11 +1,11 @@
 #pragma once
 
-#include "IEngineExecStrategy.hpp"
+#include "IEngineExecMode.hpp"
 
 class CDedicatedServerMode;
 class CDedicatedClientMode;
 
-class CListenServerMode final : public IEngineExecStrategy
+class CListenServerMode final : public IEngineExecMode
 {
 public:
 	//CListenServerMode(std::unique_ptr<CDedicatedServerMode> apDedicatedServer,
@@ -17,7 +17,7 @@ public:
 	void Init(IEngineCore *apCore) override;
 	void Shutdown() override;
 	
-	void Frame() override;
+	void Frame(float afTimeStep) override;
 private:
 	CDedicatedServerMode *mpDedicatedServer{nullptr};
 	CDedicatedClientMode *mpDedicatedClient{nullptr};

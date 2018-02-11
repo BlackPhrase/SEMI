@@ -15,7 +15,13 @@ struct IEngineClient
 	virtual void Shutdown() = 0;
 	
 	///
+	//virtual void HandleInput() = 0;
+	
+	///
 	virtual void Frame() = 0;
+	
+	///
+	//virtual void Render() = 0;
 	
 	///
 	virtual INetClient *GetLocalClient() const = 0;

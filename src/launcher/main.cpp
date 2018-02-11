@@ -23,8 +23,8 @@ int main(int argc, char **argv)
 	
 	pEngine->Init(VEngineInitParams);
 	
-	while(true)
-		pEngine->Frame();
+	while(pEngine->Frame()) // TODO: geez...
+		;
 	
 	pEngine->Shutdown();
 	

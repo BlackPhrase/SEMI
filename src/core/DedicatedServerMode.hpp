@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IEngineExecStrategy.hpp"
+#include "IEngineExecMode.hpp"
 
 struct IEngineServer;
 
-class CDedicatedServerMode final : public IEngineExecStrategy
+class CDedicatedServerMode final : public IEngineExecMode
 {
 public:
 	CDedicatedServerMode();
@@ -13,7 +13,7 @@ public:
 	void Init(IEngineCore *apCore) override;
 	void Shutdown() override;
 	
-	void Frame() override;
+	void Frame(float afTimeStep) override;
 private:
 	IEngineServer *mpEngServer{nullptr};
 };

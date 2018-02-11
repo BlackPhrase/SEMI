@@ -3,13 +3,13 @@
 struct IFactory
 {
 	///
-	virtual void *GetInterface(int version) const = 0;
+	virtual void *GetInterface(void *type, int version) const = 0;
 	
 	///
 	template<typename T>
 	T *GetInterface(int version) const
 	{
-		return static_cast<T*>(GetInterface(version));
+		return static_cast<T*>(GetInterface(T, version));
 	};
 };
 

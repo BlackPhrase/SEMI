@@ -15,4 +15,4 @@ struct IEngineServer
 	virtual void Frame() = 0;
 };
 
-using pfnGetEngineServer = IEngineServer *(*)();
+using pfnGetEngineServer = IEngineServer *(*)(int version);

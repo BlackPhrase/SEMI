@@ -31,10 +31,13 @@ bool CRenderWindowGLFW::Init(int width, int height, const char *title)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	
-	GLFWwindow *mpWindow = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	mpWindow = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	
 	if(!mpWindow)
+	{
+		glfwTerminate();
 		return false;
+	};
 	
 	//glfwSetWindowCloseCallback(mpWindow, close_callback);
 	

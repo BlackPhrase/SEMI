@@ -17,8 +17,8 @@ void CListenServerMode::Shutdown()
 	mpDedicatedClient->Shutdown();
 };
 
-void CListenServerMode::Frame()
+void CListenServerMode::Frame(float afTimeStep)
 {
-	mpDedicatedServer->Frame();
-	mpDedicatedClient->Frame();
+	mpDedicatedServer->Frame(afTimeStep);
+	mpDedicatedClient->Frame(afTimeStep);
 };

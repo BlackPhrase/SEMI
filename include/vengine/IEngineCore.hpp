@@ -21,13 +21,13 @@ struct IEngineCore
 	};
 	
 	///
-	virtual void Init(const InitParams &aInitParams) = 0;
+	virtual bool Init(const InitParams &aInitParams) = 0;
 	
 	///
 	virtual void Shutdown() = 0;
 	
 	///
-	virtual void Frame() = 0;
+	virtual bool Frame() = 0;
 	
 	///
 	virtual void Stop() = 0;
@@ -36,4 +36,4 @@ struct IEngineCore
 	virtual void SendCmd(const char *asText) = 0;
 };
 
-using pfnGetEngineCore = IEngineCore *(*)(int version);
+using pfnGetEngineCore = IEngineCore *(*)(int anVersion);
