@@ -3,6 +3,7 @@ project(V-Engine)
 
 # Declare available options
 option(VENGINE_DEDICATED "Dedicated server build (skip client-side compilation)" OFF)
+option(VENGINE_BUILD_EXAMPLES "Build examples" OFF)
 
 # We want shared libraries (and modules) without any prefix in name
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
@@ -17,3 +18,7 @@ include_directories(
 add_subdirectory(external)
 
 add_subdirectory(src)
+
+if(VENGINE_BUILD_EXAMPLES)
+	add_subdirectory(examples)
+endif()
