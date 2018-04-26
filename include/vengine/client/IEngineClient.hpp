@@ -1,3 +1,6 @@
+/// @file
+/// @brief engine client interface
+
 #pragma once
 
 struct IEngineCore;

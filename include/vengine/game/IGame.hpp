@@ -1,3 +1,6 @@
+/// @file
+/// @brief game interface
+
 #pragma once
 
 struct IGame

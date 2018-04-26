@@ -1,4 +1,8 @@
+/// @file
+
 #pragma once
+
+#include "PlatformTypes.hpp"
 
 #ifdef _WIN32
 	#define EXPORT_FUNC [[dllexport]]
