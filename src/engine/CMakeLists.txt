@@ -5,6 +5,6 @@ endif()
 add_subdirectory(server)
 
 add_subdirectory(network)
-add_subdirectory(physics)
+#add_subdirectory(physics) #TODO
 
 add_subdirectory(core)

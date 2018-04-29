@@ -9,9 +9,17 @@ option(VENGINE_BUILD_EXAMPLES "Build examples" OFF)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 set(CMAKE_SHARED_MODULE_PREFIX "")
 
+# We want to use C++17 features
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Specify output directory (for compiled binaries)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/../redist)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/../redist)
+
 # Add include directories
 include_directories(
-	${CMAKE_SOURCE_DIR}/include
+	${CMAKE_SOURCE_DIR}/include/vengine
 )
 
 # Add subdirectories

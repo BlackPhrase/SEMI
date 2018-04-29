@@ -1,4 +1,4 @@
-#add_subdirectory(game)
+add_subdirectory(game)
 add_subdirectory(engine)
 
 if(VENGINE_DEDICATED)
