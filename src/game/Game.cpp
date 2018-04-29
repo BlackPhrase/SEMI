@@ -1,9 +1,11 @@
+/// @file
+
 #include "Game.hpp"
 
 CGame::CGame() = default;
 CGame::~CGame() = default;
 
-bool CGame::Init()
+bool CGame::Init(IEngineEnv *apEngineEnv)
 {
 	return true;
 };
