@@ -8,10 +8,10 @@ struct INetwork
 	/// Interface version
 	static constexpr auto Version{1};
 	
-	///
-	virtual void Init() = 0;
+	/// Initialize the network system
+	virtual bool Init() = 0;
 	
-	///
+	/// Shutdown the network system
 	virtual void Shutdown() = 0;
 };
 

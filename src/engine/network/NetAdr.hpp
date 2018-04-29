@@ -1,6 +1,8 @@
+/// @file
+
 #pragma once
 
-#include "vengine/INetAdr.hpp"
+#include "network/INetAdr.hpp"
 
 class CNetAdr final : public INetAdr
 {
