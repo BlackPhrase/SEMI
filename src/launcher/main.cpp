@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include "shiftutil/shared_lib.hpp"
-#include "vengine/IEngineCore.hpp"
+#include "core/IEngineCore.hpp"
 
 int main(int argc, char **argv)
 {
