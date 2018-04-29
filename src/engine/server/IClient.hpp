@@ -6,5 +6,8 @@
 struct IClient
 {
 	/// Disconnect the client with a reason
-	virtual void Disconnect(const char *reason, ...) = 0;
+	virtual void Disconnect(const char *asReason, ...) = 0;
+	
+	///
+	virtual bool IsConnected() const = 0;
 };

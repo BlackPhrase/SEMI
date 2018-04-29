@@ -13,7 +13,7 @@ public:
 	CNetServer();
 	~CNetServer();
 	
-	IClient *GetClientByID(int index) const;
+	IClient *GetClientByID(int index) const {return mvClients.at(index);}
 private:
 	int FindFreeSlot() const;
 	

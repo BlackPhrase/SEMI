@@ -1,5 +1,9 @@
 project(VEngine-Server)
 
+include_directories(
+	${CMAKE_SOURCE_DIR}/external/shiftutil/include
+)
+
 file(GLOB PROJECT_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
