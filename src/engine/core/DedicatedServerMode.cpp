@@ -8,7 +8,7 @@
 CDedicatedServerMode::CDedicatedServerMode() = default;
 CDedicatedServerMode::~CDedicatedServerMode() = default;
 
-void CDedicatedServerMode::Init(IEngineCore *apCore)
+void CDedicatedServerMode::Init(ICoreEnv *apCoreEnv)
 {
 	//auto EngServerModule{CModuleLoader::LoadModule("VEngineServer")};
 	
@@ -31,7 +31,7 @@ void CDedicatedServerMode::Init(IEngineCore *apCore)
 	if(!mpEngServer)
 		return;
 	
-	mpEngServer->Init();
+	mpEngServer->Init(apCoreEnv);
 };
 
 void CDedicatedServerMode::Shutdown()

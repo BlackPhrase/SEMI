@@ -14,7 +14,7 @@ public:
 		: mpDedicatedServer(apDedicatedServer), mpDedicatedClient(apDedicatedClient){}
 	~CListenServerMode();
 	
-	void Init(IEngineCore *apCore) override;
+	void Init(ICoreEnv *apCoreEnv) override;
 	void Shutdown() override;
 	
 	void Frame(float afTimeStep) override;

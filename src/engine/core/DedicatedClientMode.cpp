@@ -8,7 +8,7 @@
 CDedicatedClientMode::CDedicatedClientMode() = default;
 CDedicatedClientMode::~CDedicatedClientMode() = default;
 
-void CDedicatedClientMode::Init(IEngineCore *apCore)
+void CDedicatedClientMode::Init(ICoreEnv *apCoreEnv)
 {
 	//auto EngClientModule{CModuleLoader::LoadModule("VEngineClient")};
 	
@@ -31,17 +31,12 @@ void CDedicatedClientMode::Init(IEngineCore *apCore)
 	if(!mpEngClient)
 		return;
 	
-	mpEngClient->Init(apCore);
+	mpEngClient->Init(apCoreEnv);
 };
 
 void CDedicatedClientMode::Shutdown()
 {
 	mpEngClient->Shutdown();
-};
-
-void CDedicatedClientMode::HandleInput()
-{
-	//mpEngClient->
 };
 
 void CDedicatedClientMode::Frame(float afTimeStep)

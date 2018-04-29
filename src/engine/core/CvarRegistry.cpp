@@ -1,6 +1,8 @@
 /// @file
 
 #include <cstring>
+
+#include "Cvar.hpp"
 #include "CvarRegistry.hpp"
 
 CCvarRegistry::CCvarRegistry() = default;
@@ -14,7 +16,10 @@ ICvar *CCvarRegistry::Register(const char *asName, const char *asDefValue, const
 	if(pVar)
 		return pVar;
 	
-	return mvVars.emplace_back(asName, asDefValue, asDescription);
+	//return mvVars.emplace_back(asName, asDefValue, asDescription);
+	CCvar *pCvar = new CCvar(asName, asDefValue, asDescription);
+	mvVars.push_back(pCvar);
+	return pCvar;
 };
 
 ICvar *CCvarRegistry::Find(const char *asName) const
@@ -22,4 +27,6 @@ ICvar *CCvarRegistry::Find(const char *asName) const
 	for(auto It : mvVars)
 		if(!strcmp(It->GetName(), asName))
 			return It;
+	
+	return nullptr;
 };

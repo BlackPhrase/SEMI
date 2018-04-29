@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#include "core/ICvarRegistry.hpp"
+
 class CCvar;
 using tCvarVec = std::vector<CCvar*>;
 

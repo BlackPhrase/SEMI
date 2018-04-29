@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "core/IEngineCore.hpp"
+struct ICoreEnv;
 
 struct IEngineExecMode
 {
 	///
-	virtual void Init(IEngineCore *apCore){}
+	virtual void Init(ICoreEnv *apCoreEnv){}
 	
 	///
 	virtual void Shutdown(){}

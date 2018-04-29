@@ -12,7 +12,7 @@ public:
 	CDedicatedServerMode();
 	~CDedicatedServerMode();
 	
-	void Init(IEngineCore *apCore) override;
+	void Init(ICoreEnv *apCoreEnv) override;
 	void Shutdown() override;
 	
 	void Frame(float afTimeStep) override;

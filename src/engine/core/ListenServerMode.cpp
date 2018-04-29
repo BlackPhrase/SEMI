@@ -5,10 +5,10 @@
 //CListenServerMode::CListenServerMode() = default;
 CListenServerMode::~CListenServerMode() = default;
 
-void CListenServerMode::Init(IEngineCore *apCore)
+void CListenServerMode::Init(ICoreEnv *apCoreEnv)
 {
-	mpDedicatedServer->Init(apCore);
-	mpDedicatedClient->Init(apCore);
+	mpDedicatedServer->Init(apCoreEnv);
+	mpDedicatedClient->Init(apCoreEnv);
 };
 
 void CListenServerMode::Shutdown()
