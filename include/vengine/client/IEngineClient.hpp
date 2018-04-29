@@ -3,7 +3,7 @@
 
 #pragma once
 
-struct IEngineCore;
+struct ICoreEnv;
 struct INetClient;
 
 struct IEngineClient
@@ -12,7 +12,7 @@ struct IEngineClient
 	static constexpr auto Version{1};
 	
 	///
-	virtual void Init(IEngineCore *apCore) = 0;
+	virtual bool Init(ICoreEnv *apCoreEnv) = 0;
 	
 	///
 	virtual void Shutdown() = 0;
@@ -30,4 +30,4 @@ struct IEngineClient
 	virtual INetClient *GetLocalClient() const = 0;
 };
 
-using pfnGetEngineClient = IEngineClient *(*)(int version);
+using pfnGetEngineClient = IEngineClient *(*)(int anVersion);

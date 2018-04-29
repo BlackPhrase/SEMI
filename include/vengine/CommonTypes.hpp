@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "PlatformTypes.hpp"
 
 #ifdef _WIN32
@@ -13,3 +15,5 @@
 #endif
 
 #define C_EXPORT extern "C" EXPORT_FUNC
+
+using tString = std::string;

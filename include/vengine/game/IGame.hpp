@@ -3,10 +3,15 @@
 
 #pragma once
 
+struct IEngineEnv;
+
 struct IGame
 {
+	/// Interface version
+	static constexpr auto Version{1};
+	
 	///
-	virtual bool Init() = 0;
+	virtual bool Init(IEngineEnv *apEngineEnv) = 0;
 	
 	///
 	virtual void Shutdown() = 0;
@@ -15,4 +20,4 @@ struct IGame
 	virtual void Frame() = 0;
 };
 
-using pfnGetGame = IGame *(*)();
+using pfnGetGame = IGame *(*)(int anVersion);

@@ -13,6 +13,7 @@ struct ICvarRegistry
 	 * @param asName - name of the variable
 	 * @param asDefValue - default value
 	 * @param asDescription - variable description (optional)
+	 * @return pointer to a newly created variable
 	 */
 	virtual ICvar *Register(const char *asName, const char *asDefValue, const char *asDescription = "") = 0;
 	
@@ -23,4 +24,7 @@ struct ICvarRegistry
 	 * @return pointer to a variable or nullptr if not found
 	 */
 	virtual ICvar *Find(const char *asName) const = 0;
+	
+	///
+	//virtual void Remove(const char *asName) = 0;
 };

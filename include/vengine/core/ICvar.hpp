@@ -16,4 +16,10 @@ struct ICvar
 	
 	///
 	virtual const char *GetValue() const = 0;
+	
+	///
+	virtual const char *GetDefValue() const = 0;
+	
+	///
+	virtual void ResetValue() = 0;
 };
