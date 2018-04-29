@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "vengine/INetClient.hpp"
+#include "INetClient.hpp"
 
 class CNetClient final : public INetClient
 {

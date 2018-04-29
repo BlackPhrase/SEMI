@@ -14,7 +14,7 @@ public:
 	CEngineClient();
 	~CEngineClient();
 	
-	void Init(IEngineCore *apCore) override;
+	bool Init(ICoreEnv *apCoreEnv) override;
 	void Shutdown() override;
 	
 	void Frame() override;
@@ -23,5 +23,5 @@ public:
 private:
 	std::unique_ptr<CRenderWindowGLFW> mpMainWindow;
 	
-	IEngineCore *mpCore{nullptr};
+	ICoreEnv *mpCoreEnv{nullptr};
 };
