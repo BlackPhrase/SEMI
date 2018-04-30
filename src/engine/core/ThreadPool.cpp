@@ -31,8 +31,16 @@ void ThreadLoop()
 
 CThreadPool::CThreadPool(int anThreadCount)
 {
+	unsigned nMainThread{1};
+	unsigned nHardwareConcurrency{std::thread::hardware_concurrency()};
+	
+	int nMaxThreads = (nHardwareConcurrency * 2) - nMainThread;
+	
 	if(anThreadCount == -1)
-		anThreadCount = std::thread::hardware_concurrency() - 1;
+		anThreadCount = nHardwareConcurrency - nMainThread;
+	
+	if(anThreadCount > nMaxThreads)
+		anThreadCount = nMaxThreads;
 	
 	if(anThreadCount < 0)
 		anThreadCount = 0;
@@ -43,7 +51,7 @@ CThreadPool::CThreadPool(int anThreadCount)
 		mvThreads[i].detach();
 	};
 	
-	printf("ThreadPool: hardware_concurrency is %d\n", std::thread::hardware_concurrency());
+	printf("ThreadPool: hardware concurrency is %d\n", std::thread::hardware_concurrency());
 	printf("ThreadPool: %d worker thread(s) spawned\n", anThreadCount);
 };
 
