@@ -5,6 +5,7 @@
 
 struct ICmdRegistry;
 struct ICvarRegistry;
+struct IInputEventDispatcher;
 struct IPhysics;
 struct IResourceManager;
 
@@ -15,6 +16,9 @@ struct IEngineEnv
 	
 	///
 	virtual ICvarRegistry *GetCvarRegistry() const = 0;
+	
+	///
+	virtual IInputEventDispatcher *GetInputEventDispatcher() const = 0;
 	
 	///
 	virtual IPhysics *GetPhysics() const = 0;
