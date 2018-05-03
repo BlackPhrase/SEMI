@@ -26,7 +26,7 @@ public:
 	CCmdRegistry();
 	~CCmdRegistry();
 	
-	void Register(const char *asName, pfnCmdCallback afnCallback, const char *asDescription) override;
+	void Add(const char *asName, pfnCmdCallback afnCallback, const char *asDescription) override;
 private:
 	tCmdVec mvCmds;
 };
