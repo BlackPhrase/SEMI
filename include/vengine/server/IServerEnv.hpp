@@ -4,6 +4,7 @@
 #pragma once
 
 struct ICmdRegistry;
+struct ICvarRegistry;
 struct IPhysics;
 
 struct IEngineEnv
