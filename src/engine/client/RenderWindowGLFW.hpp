@@ -6,10 +6,12 @@
 
 typedef struct GLFWwindow GLFWwindow;
 
+class CInputEventDispatcher;
+
 class CRenderWindowGLFW final : public IRenderWindow
 {
 public:
-	CRenderWindowGLFW();
+	CRenderWindowGLFW(CInputEventDispatcher *apInputEventDispatcher);
 	~CRenderWindowGLFW();
 	
 	bool Init(int width, int height, const char *title) override;

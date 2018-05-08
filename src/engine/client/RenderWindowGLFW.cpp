@@ -3,8 +3,27 @@
 #include <GLFW/glfw3.h>
 
 #include "RenderWindowGLFW.hpp"
+#include "InputEventDispatcher.hpp"
 
-CRenderWindowGLFW::CRenderWindowGLFW() = default;
+int GLFWKeyToInternalKey(int anKey)
+{
+	// TODO
+	return 0;
+};
+
+/*
+int InternalKeyToGLFWKey(int anKey)
+{
+};
+*/
+
+CInputEventDispatcher *gpInputEventDispatcher{nullptr};
+
+CRenderWindowGLFW::CRenderWindowGLFW(CInputEventDispatcher *apInputEventDispatcher)
+{
+	gpInputEventDispatcher = apInputEventDispatcher;
+};
+
 CRenderWindowGLFW::~CRenderWindowGLFW() = default;
 
 /*
@@ -16,13 +35,26 @@ static void error_callback(int error, const char *description)
 static void close_callback(GLFWwindow *window)
 {
 };
-
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
-{
-    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-}
 */
+
+static void key_callback(GLFWwindow *apWindow, int anKey, int anScanCode, int anAction, int anModifiers)
+{
+    if(anKey == GLFW_KEY_ESCAPE && anAction == GLFW_PRESS)
+	{
+        glfwSetWindowShouldClose(apWindow, GLFW_TRUE);
+		return;
+	};
+	
+	switch(anAction)
+	{
+	case GLFW_PRESS:
+		gpInputEventDispatcher->KeyPressed(anKey);
+		break;
+	case GLFW_RELEASE:
+		gpInputEventDispatcher->KeyReleased(anKey);
+		break;
+	};
+};
 
 bool CRenderWindowGLFW::Init(int width, int height, const char *title)
 {
@@ -47,7 +79,7 @@ bool CRenderWindowGLFW::Init(int width, int height, const char *title)
 	glfwMakeContextCurrent(mpWindow);
 	glfwSwapInterval(1);
 	
-	//glfwSetKeyCallback(mpWindow, key_callback);
+	glfwSetKeyCallback(mpWindow, key_callback);
 	return true;
 };
 
