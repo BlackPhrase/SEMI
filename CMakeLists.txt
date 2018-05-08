@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
-project(V-Engine)
+project(V-Engine VERSION 0.1.4)
+
+message(STATUS "${PROJECT_NAME} v.${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
 # Declare available options
 option(VENGINE_DEDICATED "Dedicated server build (skip client-side compilation)" OFF)
@@ -23,10 +25,14 @@ include_directories(
 )
 
 # Add subdirectories
+
+## External dependencies
 add_subdirectory(external)
 
+## Main sources folder
 add_subdirectory(src)
 
+## Examples
 if(VENGINE_BUILD_EXAMPLES)
 	add_subdirectory(examples)
 endif()
