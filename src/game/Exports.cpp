@@ -3,9 +3,9 @@
 #include "CommonTypes.hpp"
 #include "Game.hpp"
 
-C_EXPORT IGame *GetGame(int version)
+C_EXPORT IGame *GetGame(int anVersion)
 {
-	if(version == IGame::Version)
+	if(anVersion == IGame::Version)
 	{
 		static CGame Game;
 		return &Game;
