@@ -8,3 +8,4 @@
 - [ ] Module export functions -> engine modules with factories
 - [ ] AppVeyor and Travis integration
 - [ ] Logging functionality
+- [ ] Rewrite cmd and cvar registries to use lists?
