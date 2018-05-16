@@ -6,7 +6,10 @@
 
 #include "client/IEngineClient.hpp"
 
-class CRenderWindowGLFW;
+struct IRenderWindow;
+struct IClientGame;
+class CEngineEnv;
+class CInputEventDispatcher;
 
 class CEngineClient final : public IEngineClient
 {
@@ -21,7 +24,12 @@ public:
 	
 	INetClient *GetLocalClient() const override {return nullptr;}
 private:
-	std::unique_ptr<CRenderWindowGLFW> mpMainWindow;
+	bool InitGame();
+	
+	std::unique_ptr<CEngineEnv> mpEnv;
+	std::unique_ptr<CInputEventDispatcher> mpInputEventDispatcher;
+	std::unique_ptr<IRenderWindow> mpMainWindow;
 	
 	ICoreEnv *mpCoreEnv{nullptr};
+	IClientGame *mpGame{nullptr};
 };
