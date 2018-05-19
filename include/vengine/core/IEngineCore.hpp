@@ -36,7 +36,7 @@ struct IEngineCore
 	/// Run a single frame
 	virtual bool Frame() = 0;
 	
-	///
+	/// Request engine to shutdown
 	virtual void RequestClose() = 0;
 };
 

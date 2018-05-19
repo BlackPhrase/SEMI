@@ -3,18 +3,30 @@
 
 #pragma once
 
+struct IMemoryManager;
+struct IConfig;
 struct ICvarRegistry;
 struct ICmdRegistry;
+struct ICmdProcessor;
 struct IPhysics;
 struct INetwork;
 
 struct ICoreEnv
 {
 	///
+	virtual IMemoryManager *GetMemoryManager() const = 0;
+	
+	///
+	virtual IConfig *GetConfig() const = 0;
+	
+	///
 	virtual ICvarRegistry *GetCvarRegistry() const = 0;
 	
 	///
 	virtual ICmdRegistry *GetCmdRegistry() const = 0;
+	
+	///
+	virtual ICmdProcessor *GetCmdProcessor() const = 0;
 	
 	///
 	virtual IPhysics *GetPhysics() const = 0;

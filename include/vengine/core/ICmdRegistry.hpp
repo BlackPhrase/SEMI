@@ -4,8 +4,9 @@
 #pragma once
 
 //struct ICmd;
+struct ICmdArgs;
 
-using pfnCmdCallback = void (*)();
+using pfnCmdCallback = void (*)(const ICmdArgs &apArgs);
 
 struct ICmdRegistry
 {
@@ -26,6 +27,10 @@ struct ICmdRegistry
 	 */
 	//virtual ICmd *Find(const char *asName) const = 0;
 	
-	///
-	//virtual void Remove(const char *asName) = 0;
+	/**
+	 * Removes an already registered command (if present)
+	 *
+	 * @param asName - name of the command
+	 */
+	virtual void Remove(const char *asName) = 0;
 };
