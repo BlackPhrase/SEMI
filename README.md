@@ -10,8 +10,7 @@
 
 The name is coming from the engine's design approach - it's split into three main modules: core, server-side and client-side  
 Client-side and server-side engine parts are directly interconnected with the core part, but not with each other  
-This pretty much resembles a "V" letter and Vee configuration of internal combustion engines  
-https://en.wikipedia.org/wiki/V_engine  
+This pretty much resembles a "V" letter and a Vee configuration of [internal combustion engines](https://en.wikipedia.org/wiki/V_engine)   
 Our client and server side modules are 2 "cylinders" and core is our "crankshaft" here
 
 ## Requirements
@@ -19,7 +18,8 @@ Our client and server side modules are 2 "cylinders" and core is our "crankshaft
 * [GLFW3](https://github.com/glfw/glfw)
 * [Bullet Physics 3](https://github.com/bulletphysics/bullet3)
 * [iniparser](https://github.com/ndevilla/iniparser)
+* [Lua 5.3 or above](https://www.lua.org/download.html)
 
 ## License
 
-MIT
+[MIT](LICENSE)
