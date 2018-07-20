@@ -9,11 +9,18 @@ struct IEngineCore;
 class CCoreEnv final : public ICoreEnv
 {
 public:
-	CCoreEnv(IEngineCore *apCore, ICvarRegistry *apCvarRegistry, ICmdRegistry *apCmdRegistry, IPhysics *apPhysics, INetwork *apNetwork);
+	CCoreEnv(IEngineCore *apCore, IMemoryManager *apMemoryManager, ILogger *apLogger, IConfig *apConfig,
+			ICvarRegistry *apCvarRegistry, ICmdRegistry *apCmdRegistry, ICmdProcessor *apCmdProcessor, IPhysics *apPhysics, INetwork *apNetwork);
 	~CCoreEnv();
+	
+	IMemoryManager *GetMemoryManager() const override {return mpMemoryManager;}
+	ILogger *GetLogger() const override {return mpLogger;}
+	IConfig *GetConfig() const override {return mpConfig;}
 	
 	ICvarRegistry *GetCvarRegistry() const override {return mpCvarRegistry;}
 	ICmdRegistry *GetCmdRegistry() const override {return mpCmdRegistry;}
+	
+	ICmdProcessor *GetCmdProcessor() const override {return mpCmdProcessor;}
 	
 	IPhysics *GetPhysics() const override {return mpPhysics;}
 	INetwork *GetNetwork() const override {return mpNetwork;}
@@ -24,8 +31,15 @@ public:
 private:
 	IEngineCore *mpCore{nullptr};
 
+	IMemoryManager *mpMemoryManager{nullptr};
+	ILogger *mpLogger{nullptr};
+	IConfig *mpConfig{nullptr};
+	
 	ICvarRegistry *mpCvarRegistry{nullptr};
 	ICmdRegistry *mpCmdRegistry{nullptr};
+	
+	ICmdProcessor *mpCmdProcessor{nullptr};
+	
 	IPhysics *mpPhysics{nullptr};
 	INetwork *mpNetwork{nullptr};
 };

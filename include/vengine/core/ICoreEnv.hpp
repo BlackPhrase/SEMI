@@ -4,6 +4,7 @@
 #pragma once
 
 struct IMemoryManager;
+struct ILogger;
 struct IConfig;
 struct ICvarRegistry;
 struct ICmdRegistry;
@@ -15,6 +16,9 @@ struct ICoreEnv
 {
 	///
 	virtual IMemoryManager *GetMemoryManager() const = 0;
+	
+	///
+	virtual ILogger *GetLogger() const = 0;
 	
 	///
 	virtual IConfig *GetConfig() const = 0;

@@ -3,8 +3,10 @@
 #include "CoreEnv.hpp"
 #include "core/IEngineCore.hpp"
 
-CCoreEnv::CCoreEnv(IEngineCore *apCore, ICvarRegistry *apCvarRegistry, ICmdRegistry *apCmdRegistry, IPhysics *apPhysics, INetwork *apNetwork)
-	: mpCore(apCore), mpCvarRegistry(apCvarRegistry), mpCmdRegistry(apCmdRegistry), mpPhysics(apPhysics), mpNetwork(apNetwork){}
+CCoreEnv::CCoreEnv(IEngineCore *apCore, IMemoryManager *apMemoryManager, ILogger *apLogger, IConfig *apConfig,
+					ICvarRegistry *apCvarRegistry, ICmdRegistry *apCmdRegistry, ICmdProcessor *apCmdProcessor, IPhysics *apPhysics, INetwork *apNetwork)
+	: mpCore(apCore), mpMemoryManager(apMemoryManager), mpLogger(apLogger), mpConfig(apConfig),
+	mpCvarRegistry(apCvarRegistry), mpCmdRegistry(apCmdRegistry), mpCmdProcessor(apCmdProcessor), mpPhysics(apPhysics), mpNetwork(apNetwork){}
 
 CCoreEnv::~CCoreEnv() = default;
 
