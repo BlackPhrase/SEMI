@@ -7,13 +7,17 @@
 #include "EngineCore.hpp"
 #include "CoreEnv.hpp"
 //#include "Timer.hpp"
+#include "MemoryManager.hpp"
+#include "Logger.hpp"
+#include "Config.hpp"
 #include "CvarRegistry.hpp"
 #include "CmdRegistry.hpp"
+#include "CmdProcessor.hpp"
 #include "ThreadPool.hpp"
 
 #include "network/INetwork.hpp"
 #include "physics/IPhysics.hpp"
-//#include "script/IScript.hpp"
+#include "script/IScript.hpp"
 
 #include "server/IEngineServer.hpp"
 #include "client/IEngineClient.hpp"
@@ -31,12 +35,21 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	
 	//mpTimer = std::make_unique<CTimer>(500ms); // TODO: THAT'S TOOO MUUUUUUUUUUUUUUUUUUUUUUUUUUUUCCH
 	
-	mpCvarRegistry = std::make_unique<CCvarRegistry>();
+	mpMemoryManager = std::make_unique<CMemoryManager>();
+	mpLogger = std::make_unique<CLogger>();
+	mpConfig = std::make_unique<CConfig>();
 	
+	// Do we have any last config saved?
+	if(!mpConfig->LoadFromFile("VEngineLast.ini"))
+		mpConfig->LoadFromFile("VEngineDefault.ini");
+	
+	mpCvarRegistry = std::make_unique<CCvarRegistry>();
 	mpCmdRegistry = std::make_unique<CCmdRegistry>();
 	
+	mpCmdProcessor = std::make_unique<CCmdProcessor>(mpCmdRegistry.get());
+	
 	// Initialize the thread pool (worker threads)
-	mpThreadPool = std::make_unique<CThreadPool>(-1);
+	mpThreadPool = std::make_unique<CThreadPool>(atoi(mpConfig->GetString("General:WorkerThreads")));
 	
 	//if(!InitPhysics())
 		//return false;
@@ -49,10 +62,10 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	//else
 		//mpNetwork = new CNetworkNull(); // TODO
 	
-	//if(!InitScripting())
-		//return false;
+	if(!InitScripting())
+		return false;
 	
-	mpEnv = new CCoreEnv(this, mpCvarRegistry.get(), mpCmdRegistry.get(), mpPhysics, mpNetwork);
+	mpEnv = std::make_unique<CCoreEnv>(this, mpMemoryManager.get(), mpLogger.get(), mpConfig.get(), mpCvarRegistry.get(), mpCmdRegistry.get(), mpCmdProcessor.get(), mpPhysics, mpNetwork);
 	
 	switch(aInitParams.ExecMode)
 	{
@@ -67,7 +80,9 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 		break;
 	};
 	
-	mpExecMode->Init(mpEnv);
+	mpExecMode->Init(mpEnv.get());
+	
+	mpScript->CallFunc("OnStart");
 	
 	//mpTimer->SetCallback([this](){mpExecMode->Frame();});
 	
@@ -76,7 +91,9 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 
 void CEngineCore::Shutdown()
 {
+	mpScript->CallFunc("OnExit");
 	mpExecMode->Shutdown();
+	mpConfig->SaveToFile("VEngineLast.ini"); // TODO: shouldn't it be above the call to execution mode?
 };
 
 bool CEngineCore::Frame()
@@ -84,7 +101,11 @@ bool CEngineCore::Frame()
 	if(mbCloseRequested)
 		return false;
 	
-	//mpExecMode->FrameBegin();
+	//mpExecMode->FrameBegin(); // mpEventDispatcher->DispatchEvent(Event::FrameBegin);
+	
+	mpCmdProcessor->ExecPending();
+	
+	mpScript->CallFunc("OnFrame");
 	
 	//mpTimer->Tick();
 	
@@ -99,7 +120,7 @@ bool CEngineCore::Frame()
 	
 	//mpExecMode->Render();
 	
-	//mpExecMode->FrameEnd();
+	//mpExecMode->FrameEnd(); // mpEventDispatcher->DispatchEvent(Event::FrameEnd);
 	
 	return true;
 };
@@ -144,7 +165,6 @@ bool CEngineCore::InitNetworking()
 	return true;
 };
 
-/*
 bool CEngineCore::InitScripting()
 {
 	static shiftutil::shared_lib ScriptLib("VEngineScript");
@@ -162,6 +182,8 @@ bool CEngineCore::InitScripting()
 	if(!mpScript)
 		return false;
 	
+	if(!mpScript->Init())
+		return false;
+	
 	return true;
 };
-*/
