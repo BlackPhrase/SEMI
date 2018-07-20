@@ -3,12 +3,16 @@
 
 #pragma once
 
+struct ILogger;
 struct ICmdRegistry;
 struct ICvarRegistry;
 struct IPhysics;
 
 struct IEngineEnv
 {
+	///
+	virtual ILogger *GetLogger() const = 0;
+	
 	///
 	virtual ICmdRegistry *GetCmdRegistry() const = 0;
 	
