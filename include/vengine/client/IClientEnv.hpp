@@ -3,14 +3,25 @@
 
 #pragma once
 
+struct ILogger;
 struct ICmdRegistry;
 struct ICvarRegistry;
 struct IInputEventDispatcher;
+//struct IInput;
 struct IPhysics;
 struct IResourceManager;
 
 struct IEngineEnv
 {
+	/// Interface version
+	static constexpr auto Version{1};
+	
+	///
+	//virtual int GetVersion() const {return Version;}
+	
+	///
+	virtual ILogger *GetLogger() const = 0;
+	
 	///
 	virtual ICmdRegistry *GetCmdRegistry() const = 0;
 	
@@ -19,6 +30,9 @@ struct IEngineEnv
 	
 	///
 	virtual IInputEventDispatcher *GetInputEventDispatcher() const = 0;
+	
+	///
+	//virtual IInput *GetInput() const = 0;
 	
 	///
 	virtual IPhysics *GetPhysics() const = 0;
