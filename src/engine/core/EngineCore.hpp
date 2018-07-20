@@ -20,6 +20,8 @@ class CCmdRegistry;
 class CCmdProcessor;
 class CThreadPool;
 
+class CLogSinkInternal;
+
 class CEngineCore final : public IEngineCore
 {
 public:
@@ -52,6 +54,8 @@ private:
 	std::unique_ptr<CCmdProcessor> mpCmdProcessor;
 	
 	std::unique_ptr<CThreadPool> mpThreadPool;
+	
+	std::unique_ptr<CLogSinkInternal> mpLogSinkInternal;
 	
 	IPhysics *mpPhysics{nullptr};
 	INetwork *mpNetwork{nullptr};

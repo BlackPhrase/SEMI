@@ -26,6 +26,8 @@
 #include "DedicatedClientMode.hpp"
 #include "ListenServerMode.hpp"
 
+#include "LogSinkInternal.hpp"
+
 CEngineCore::CEngineCore() = default;
 CEngineCore::~CEngineCore() = default;
 
@@ -36,7 +38,11 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	//mpTimer = std::make_unique<CTimer>(500ms); // TODO: THAT'S TOOO MUUUUUUUUUUUUUUUUUUUUUUUUUUUUCCH
 	
 	mpMemoryManager = std::make_unique<CMemoryManager>();
+	
 	mpLogger = std::make_unique<CLogger>();
+	mpLogSinkInternal = std::make_unique<CLogSinkInternal>();
+	mpLogger->AddSink(mpLogSinkInternal);
+	
 	mpConfig = std::make_unique<CConfig>();
 	
 	// Do we have any last config saved?
@@ -94,6 +100,7 @@ void CEngineCore::Shutdown()
 	mpScript->CallFunc("OnExit");
 	mpExecMode->Shutdown();
 	mpConfig->SaveToFile("VEngineLast.ini"); // TODO: shouldn't it be above the call to execution mode?
+	mpLogger->RemoveSink(mpLogSinkInternal);
 };
 
 bool CEngineCore::Frame()
