@@ -3,6 +3,8 @@
 
 #pragma once
 
+constexpr auto nServerPort{308};
+
 struct INetClient;
 struct INetServer;
 
@@ -21,10 +23,15 @@ struct INetwork
 	virtual void Update() = 0;
 	
 	///
-	//virtual INetClient *StartClient() = 0; // TODO
+	//virtual INetServer *StartServer() = 0; // TODO
+	virtual bool StartServer(int anPort = nServerPort) = 0;
 	
 	///
-	//virtual INetServer *StartServer() = 0; // TODO
+	//virtual INetClient *StartClient() = 0; // TODO
+	virtual bool StartClient() = 0;
+	
+	///
+	virtual bool ClientSendConnectionless(const char *asAdr, int anPort, const char *asMsg) = 0;
 };
 
 using pfnGetNetwork = INetwork *(*)(int anVersion);

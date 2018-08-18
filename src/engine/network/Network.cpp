@@ -38,14 +38,8 @@ bool CNetwork::Init()
 	};
 #endif
 	
-	if(!StartServer(nServerPort))
-		return false;
-	
-	if(!StartClient())
-		return false;
-	
-	if(!ConnectClient("127.0.0.1", nServerPort))
-		return false;
+	//if(!ConnectClient("127.0.0.1", nServerPort))
+		//return false;
 	
 	return true;
 };
@@ -92,11 +86,6 @@ void CNetwork::Update()
 		
 		printf("[Server] Got: %s\n", sMsg);
 	};
-	
-	if(mbClientStarted)
-	{
-		ClientSend("127.0.0.1", nServerPort, "Hello World!");
-	};
 };
 
 bool CNetwork::StartServer(int anPort)
@@ -106,8 +95,10 @@ bool CNetwork::StartServer(int anPort)
 	if(svsock == nInvalidSocket)
 		return false;
 	
+#ifdef _WIN32
 	unsigned long mode{1};
 	ioctlsocket(svsock, FIONBIO, &mode);
+#endif
 	
 	static sockaddr_in svadr{};
 	//static sockaddr_in6 svadr{};
@@ -177,7 +168,7 @@ bool CNetwork::ConnectClient(const char *asAdr, int anPort = nServerPort)
 	return true;
 };
 
-bool CNetwork::ClientSend(const char *asAdr, int anPort, const char *asMsg)
+bool CNetwork::ClientSendConnectionless(const char *asAdr, int anPort, const char *asMsg)
 {
 	if(!mbClientStarted)
 		return false;
