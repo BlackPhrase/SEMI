@@ -18,10 +18,13 @@ struct INetwork
 	virtual void Shutdown() = 0;
 	
 	///
-	virtual INetClient *StartClient() = 0;
+	virtual void Update() = 0;
 	
 	///
-	virtual INetServer *StartServer() = 0;
+	//virtual INetClient *StartClient() = 0; // TODO
+	
+	///
+	//virtual INetServer *StartServer() = 0; // TODO
 };
 
 using pfnGetNetwork = INetwork *(*)(int anVersion);

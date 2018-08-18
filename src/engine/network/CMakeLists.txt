@@ -9,3 +9,7 @@ add_library(${PROJECT_NAME} MODULE ${PROJECT_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "VEngineNetwork"
 )
+
+if(WIN32)
+target_link_libraries(${PROJECT_NAME} ws2_32)
+endif()
