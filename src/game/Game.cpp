@@ -19,7 +19,7 @@ bool CGame::Init(IEngineEnv *apEngineEnv)
 	
 	ICvar *pCvar_GameDLL = apEngineEnv->GetCvarRegistry()->Add("sv_gamedll", "1", "Just a test cvar indicating that game dll is working!");
 	
-	printf("\"%s\" is \"%s\" (def: %s | desc: %s)\n", pCvar_GameDLL->GetName(), pCvar_GameDLL->GetValue(), pCvar_GameDLL->GetDefValue(), pCvar_GameDLL->GetDescription());
+	apEngineEnv->GetLogger()->Message("\"%s\" is \"%s\" (def: %s | desc: %s)\n", pCvar_GameDLL->GetName(), pCvar_GameDLL->GetValue(), pCvar_GameDLL->GetDefValue(), pCvar_GameDLL->GetDescription());
 	return true;
 };
 
