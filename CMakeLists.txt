@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(V-Engine VERSION 0.1.6)
+project(V-Engine VERSION 0.1.9)
 
 message(STATUS "${PROJECT_NAME} v.${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
@@ -7,6 +7,11 @@ message(STATUS "${PROJECT_NAME} v.${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MIN
 option(VENGINE_DEDICATED "Dedicated server build (skip client-side compilation)" OFF)
 option(VENGINE_BUILD_EXAMPLES "Build examples" OFF)
 option(VENGINE_SINGLEGAMEDLL "Use single game dll for both client and server sides" OFF)
+option(VENGINE_DEV "I'm a developer and I need some additional features" OFF)
+
+if(VENGINE_DEV)
+	add_definitions(-DVENGINE_DEV)
+endif()
 
 # We want shared libraries (and modules) without any prefix in name
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
