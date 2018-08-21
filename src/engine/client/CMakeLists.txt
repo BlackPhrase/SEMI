@@ -4,7 +4,7 @@ add_definitions(-DGLFW_DLL)
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/external/glfw3/include
-	
+	${CMAKE_SOURCE_DIR}/external/shiftutil/include
 )
 
 link_directories(

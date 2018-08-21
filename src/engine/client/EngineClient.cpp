@@ -51,7 +51,7 @@ bool CEngineClient::Init(ICoreEnv *apCoreEnv)
 	static std::unique_ptr<CTestInputEventListener> pTestInputEventListener = std::make_unique<CTestInputEventListener>();
 	mpInputEventDispatcher->AddListener(pTestInputEventListener.get());
 	
-	mpEnv = std::make_unique<CEngineEnv>(nullptr, mpCoreEnv->GetCvarRegistry()/*nullptr*/, mpInputEventDispatcher.get(), mpCoreEnv->GetPhysics(), nullptr);
+	mpEnv = std::make_unique<CEngineEnv>(mpCoreEnv->GetLogger(), nullptr, mpCoreEnv->GetCvarRegistry()/*nullptr*/, mpInputEventDispatcher.get(), mpCoreEnv->GetPhysics(), nullptr);
 	
 	mpMainWindow = std::make_unique<CRenderWindowGLFW>(mpInputEventDispatcher.get());
 	
@@ -81,8 +81,8 @@ void CEngineClient::Frame()
 	if(mpMainWindow->WantClose())
 		mpCoreEnv->Stop(); //SendCmd("stop"); // quit/exit
 	
-	mpCoreEnv->GetCmdProcessor()->AppendText("test");
-	mpCoreEnv->GetCmdProcessor()->AppendText("unknown-cmd-test");
+	//mpCoreEnv->GetCmdProcessor()->AppendText("test");
+	//mpCoreEnv->GetCmdProcessor()->AppendText("unknown-cmd-test");
 	
 	mpMainWindow->Update();
 	mpGame->Frame();

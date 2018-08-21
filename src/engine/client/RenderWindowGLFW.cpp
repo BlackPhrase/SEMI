@@ -1,6 +1,7 @@
 /// @file
 
 #include <GLFW/glfw3.h>
+//#include <GL/glcorearb.h>
 
 #include "RenderWindowGLFW.hpp"
 #include "InputEventDispatcher.hpp"
@@ -56,6 +57,25 @@ static void key_callback(GLFWwindow *apWindow, int anKey, int anScanCode, int an
 	};
 };
 
+/*
+char tri[] =
+{
+	-0.5, -0.5, 0.0,
+	0.5, -0.5, 0.0,
+	0.0, 0.5, 0.0
+};
+
+void InitTri()
+{
+	unsigned VBO{0};
+	glGenBuffers(1, &VBO);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glArrayData(GL_ARRAY_BUFFER, sizeof(tri), tri, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+};
+*/
+
 bool CRenderWindowGLFW::Init(int width, int height, const char *title)
 {
 	if(!glfwInit())
@@ -65,6 +85,8 @@ bool CRenderWindowGLFW::Init(int width, int height, const char *title)
 	
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	
 	mpWindow = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	
@@ -80,6 +102,11 @@ bool CRenderWindowGLFW::Init(int width, int height, const char *title)
 	glfwSwapInterval(1);
 	
 	glfwSetKeyCallback(mpWindow, key_callback);
+	
+	glViewport(0, 0, width, height);
+	
+	//InitTri();
+	
 	return true;
 };
 
@@ -94,7 +121,6 @@ void CRenderWindowGLFW::Update()
 {
 	//glfwGetFramebufferSize(mpWindow, &width, &height);
 	
-	//glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glfwSwapBuffers(mpWindow);
