@@ -9,10 +9,11 @@ struct IEngineCore;
 class CCoreEnv final : public ICoreEnv
 {
 public:
-	CCoreEnv(IEngineCore *apCore, IMemoryManager *apMemoryManager, ILogger *apLogger, IConfig *apConfig,
+	CCoreEnv(IEngineCore *apCore, ICommandLine *apCommandLine, IMemoryManager *apMemoryManager, ILogger *apLogger, IConfig *apConfig,
 			ICvarRegistry *apCvarRegistry, ICmdRegistry *apCmdRegistry, ICmdProcessor *apCmdProcessor, IPhysics *apPhysics, INetwork *apNetwork);
 	~CCoreEnv();
 	
+	ICommandLine *GetCommandLine() const override {return mpCommandLine;}
 	IMemoryManager *GetMemoryManager() const override {return mpMemoryManager;}
 	ILogger *GetLogger() const override {return mpLogger;}
 	IConfig *GetConfig() const override {return mpConfig;}
@@ -31,6 +32,7 @@ public:
 private:
 	IEngineCore *mpCore{nullptr};
 
+	ICommandLine *mpCommandLine{nullptr};
 	IMemoryManager *mpMemoryManager{nullptr};
 	ILogger *mpLogger{nullptr};
 	IConfig *mpConfig{nullptr};
