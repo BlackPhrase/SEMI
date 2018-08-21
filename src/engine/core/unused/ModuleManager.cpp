@@ -18,7 +18,7 @@ void CModuleManager::UnloadModule(SModuleHandle *apModule)
 	// TODO
 };
 
-SModuleHandle *CModuleManager::GetModule(const std::string &asName) const
+SModuleHandle *CModuleManager::GetByName(const std::string &asName) const
 {
 	for(auto It : mvModules)
 		if(!strcmp(It->GetName(), asName.c_str()))

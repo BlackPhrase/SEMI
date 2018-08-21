@@ -41,7 +41,7 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	
 	mpLogger = std::make_unique<CLogger>();
 	mpLogSinkInternal = std::make_unique<CLogSinkInternal>();
-	mpLogger->AddSink(mpLogSinkInternal);
+	mpLogger->AddSink(mpLogSinkInternal.get());
 	
 	mpConfig = std::make_unique<CConfig>();
 	
@@ -62,6 +62,9 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	
 	bool bUseNetworking{false};
 	
+	// TODO
+	bUseNetworking = true;
+	
 	if(bUseNetworking)
 		if(!InitNetworking())
 			return false;
@@ -71,18 +74,35 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	if(!InitScripting())
 		return false;
 	
-	mpEnv = std::make_unique<CCoreEnv>(this, mpMemoryManager.get(), mpLogger.get(), mpConfig.get(), mpCvarRegistry.get(), mpCmdRegistry.get(), mpCmdProcessor.get(), mpPhysics, mpNetwork);
+	mpEnv = std::make_unique<CCoreEnv>(this, nullptr, mpMemoryManager.get(), mpLogger.get(), mpConfig.get(), mpCvarRegistry.get(), mpCmdRegistry.get(), mpCmdProcessor.get(), mpPhysics, mpNetwork);
+	
+	// TODO: refactor this!!
 	
 	switch(aInitParams.ExecMode)
 	{
 	case Mode::ListenServer:
 		mpExecMode = std::make_unique<CListenServerMode>(new CDedicatedServerMode(), new CDedicatedClientMode()); // TODO: bad
+		
+		if(!mpNetwork->StartServer(nServerPort))
+			return false;
+	
+		if(!mpNetwork->StartClient())
+			return false;
+		
 		break;
 	case Mode::DedicatedServer:
 		mpExecMode = std::make_unique<CDedicatedServerMode>();
+		
+		if(!mpNetwork->StartServer(nServerPort))
+			return false;
+		
 		break;
 	case Mode::DedicatedClient:
 		mpExecMode = std::make_unique<CDedicatedClientMode>();
+		
+		if(!mpNetwork->StartClient())
+			return false;
+		
 		break;
 	};
 	
@@ -99,8 +119,20 @@ void CEngineCore::Shutdown()
 {
 	mpScript->CallFunc("OnExit");
 	mpExecMode->Shutdown();
+	
+	// TODO
+	
+	//if(mpPhysics)
+		//mpPhysics->Shutdown();
+	
+	if(mpNetwork)
+		mpNetwork->Shutdown();
+	
+	if(mpScript)
+		mpScript->Shutdown();
+	
 	mpConfig->SaveToFile("VEngineLast.ini"); // TODO: shouldn't it be above the call to execution mode?
-	mpLogger->RemoveSink(mpLogSinkInternal);
+	mpLogger->RemoveSink(mpLogSinkInternal.get());
 };
 
 bool CEngineCore::Frame()
@@ -111,6 +143,12 @@ bool CEngineCore::Frame()
 	//mpExecMode->FrameBegin(); // mpEventDispatcher->DispatchEvent(Event::FrameBegin);
 	
 	mpCmdProcessor->ExecPending();
+	
+	if(mpNetwork)
+	{
+		mpNetwork->Update();
+		mpNetwork->ClientSendConnectionless("127.0.0.1", nServerPort, "Hello World!");
+	};
 	
 	mpScript->CallFunc("OnFrame");
 	
@@ -167,6 +205,9 @@ bool CEngineCore::InitNetworking()
 	mpNetwork = fnGetNetwork(INetwork::Version);
 	
 	if(!mpNetwork)
+		return false;
+	
+	if(!mpNetwork->Init())
 		return false;
 	
 	return true;
