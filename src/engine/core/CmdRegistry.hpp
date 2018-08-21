@@ -12,6 +12,12 @@ struct SCmd
 	SCmd(const tString &asName, pfnCmdCallback afnCallback, const char *asDescription = "")
 		: msName(asName), mfnCallback(afnCallback), msDesc(asDescription){}
 	
+	void Exec(const ICmdArgs &apArgs)
+	{
+		if(mfnCallback)
+			mfnCallback(apArgs);
+	};
+	
 	tString msName{""};
 	tString msDesc{""};
 	
@@ -27,6 +33,9 @@ public:
 	~CCmdRegistry();
 	
 	void Add(const char *asName, pfnCmdCallback afnCallback, const char *asDescription) override;
+	void Remove(const char *asName) override;
+	
+	SCmd *Find(const char *asName) const;
 private:
 	tCmdVec mvCmds;
 };
