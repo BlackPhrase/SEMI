@@ -1,5 +1,8 @@
 /// @file
 
+#include <cstdarg>
+#include <cstdio>
+
 #include "Logger.hpp"
 
 CLogger::CLogger() = default;
