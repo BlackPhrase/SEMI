@@ -1,3 +1,7 @@
+if(NOT VENGINE_DEDICATED)
+	add_subdirectory(clientgame)
+endif()
+
 add_subdirectory(game)
 add_subdirectory(engine)
 
