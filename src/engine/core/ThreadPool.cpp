@@ -11,6 +11,8 @@ std::mutex mutex;
 
 void ThreadLoop()
 {
+	std::this_thread::yield();
+	/*
 	using namespace std::chrono_literals;
 	
 	static std::atomic_int nLoop;
@@ -27,6 +29,7 @@ void ThreadLoop()
 			++nLoop;
 		};
 	};
+	*/
 };
 
 CThreadPool::CThreadPool(int anThreadCount)
