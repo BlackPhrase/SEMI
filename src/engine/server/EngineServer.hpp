@@ -2,10 +2,12 @@
 
 #pragma once
 
+#include <memory>
+
 #include "server/IEngineServer.hpp"
 
 struct IGame;
-class CServerEnv;
+class CEngineEnv;
 
 class CEngineServer final : public IEngineServer
 {
@@ -20,6 +22,8 @@ public:
 private:
 	bool InitGame();
 	
-	CServerEnv *mpServerEnv{nullptr};
+	std::unique_ptr<CEngineEnv> mpEnv;
+	
+	ICoreEnv *mpCoreEnv{nullptr};
 	IGame *mpGame{nullptr};
 };

@@ -3,7 +3,9 @@
 #include <cstdio>
 
 #include "shiftutil/shared_lib.hpp"
+
 #include "EngineServer.hpp"
+#include "EngineEnv.hpp"
 #include "core/ICoreEnv.hpp"
 #include "game/IGame.hpp"
 
@@ -11,7 +13,7 @@
 #include "core/ICvar.hpp"
 #include "core/ICmdRegistry.hpp"
 
-void TestCmd_f()
+void TestCmd_f(const ICmdArgs &apArgs)
 {
 	printf("TestCmd_f\n");
 };
@@ -21,19 +23,24 @@ CEngineServer::~CEngineServer() = default;
 
 bool CEngineServer::Init(ICoreEnv *apCoreEnv)
 {
+	if(!apCoreEnv)
+		return false;
+	
+	mpCoreEnv = apCoreEnv;
+	
+	mpEnv = std::make_unique<CEngineEnv>(mpCoreEnv->GetLogger(), nullptr, mpCoreEnv->GetCvarRegistry()/*nullptr*/, mpCoreEnv->GetPhysics());
+	
 	if(!InitGame(/*"VEngineGame"*/))
 		return false;
 	
-	//mpServerEnv = new CServerEnv();
-	
-	if(!mpGame->Init(nullptr)) // TODO
+	if(!mpGame->Init(mpEnv.get()))
 		return false;
 	
-	apCoreEnv->GetCvarRegistry()->Register("sv_pure", "1");
+	apCoreEnv->GetCvarRegistry()->Add("sv_pure", "1");
 	
 	printf("\"sv_pure\" is \"%s\"\n", apCoreEnv->GetCvarRegistry()->Find("sv_pure")->GetValue());
 	
-	apCoreEnv->GetCmdRegistry()->Register("test", TestCmd_f);
+	apCoreEnv->GetCmdRegistry()->Add("test", TestCmd_f);
 	return true;
 };
 
