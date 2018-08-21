@@ -3,7 +3,8 @@
 
 #pragma once
 
-struct ILogger;
+#include "core/ILogger.hpp"
+
 struct ICmdRegistry;
 struct ICvarRegistry;
 struct IPhysics;

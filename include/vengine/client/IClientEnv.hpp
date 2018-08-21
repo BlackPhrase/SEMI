@@ -3,7 +3,9 @@
 
 #pragma once
 
-struct ILogger;
+#include "core/ILogger.hpp"
+
+//struct ILogger;
 struct ICmdRegistry;
 struct ICvarRegistry;
 struct IInputEventDispatcher;

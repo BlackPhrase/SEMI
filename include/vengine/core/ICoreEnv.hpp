@@ -3,6 +3,7 @@
 
 #pragma once
 
+struct ICommandLine;
 struct IMemoryManager;
 struct ILogger;
 struct IConfig;
@@ -14,6 +15,9 @@ struct INetwork;
 
 struct ICoreEnv
 {
+	///
+	virtual ICommandLine *GetCommandLine() const = 0;
+	
 	///
 	virtual IMemoryManager *GetMemoryManager() const = 0;
 	
