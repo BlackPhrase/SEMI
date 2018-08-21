@@ -16,4 +16,7 @@ struct INetAdr
 	
 	/// @return Type of the network address
 	virtual Type GetType() const = 0;
+	
+	///
+	virtual int GetPort() const = 0;
 };
