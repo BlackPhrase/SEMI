@@ -18,5 +18,5 @@ struct ILogger
 	virtual void RemoveSink(ILogSink *apSink) = 0;
 	
 	///
-	virtual Message(const char *asMsg, ...) = 0;
+	virtual void Message(const char *asMsg, ...) = 0;
 };
