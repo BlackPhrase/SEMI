@@ -19,7 +19,7 @@ bool CClientGame::Init(IEngineEnv *apEngineEnv)
 	
 	ICvar *pCvar_ClientDLL = apEngineEnv->GetCvarRegistry()->Add("cl_gamedll", "1", "Just a test cvar indicating that client game dll is working!");
 	
-	printf("\"%s\" is \"%s\" (def: %s | desc: %s)\n", pCvar_ClientDLL->GetName(), pCvar_ClientDLL->GetValue(), pCvar_ClientDLL->GetDefValue(), pCvar_ClientDLL->GetDescription());
+	apEngineEnv->GetLogger()->Message("\"%s\" is \"%s\" (def: %s | desc: %s)\n", pCvar_ClientDLL->GetName(), pCvar_ClientDLL->GetValue(), pCvar_ClientDLL->GetDefValue(), pCvar_ClientDLL->GetDescription());
 	return true;
 };
 
