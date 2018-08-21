@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(V-Engine VERSION 0.1.9)
+project(V-Engine VERSION 0.2)
 
 message(STATUS "${PROJECT_NAME} v.${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
