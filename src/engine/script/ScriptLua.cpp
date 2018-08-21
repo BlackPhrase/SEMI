@@ -4,12 +4,27 @@
 
 #include "ScriptLua.hpp"
 
+extern "C" int test(lua_State *apState)
+{
+	// The number of function arguments will be on top of the stack
+	auto nArgs{lua_gettop(apState)};
+	
+	//lua_tostring(apState, nArgs);
+	
+	//lua_pushnumber(apState, 123);
+	
+	// Let Lua know how many return values we've passed
+	return 0;
+};
+
 CScriptLua::CScriptLua() = default;
 CScriptLua::~CScriptLua() = default;
 
 bool CScriptLua::Init()
 {
 	mpState = luaL_newstate();
+	
+	lua_register(mpState, "test", test);
 	
 	// Make standard libraries available in the Lua state
 	luaL_openlibs(mpState);
