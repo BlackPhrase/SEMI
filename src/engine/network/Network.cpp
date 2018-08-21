@@ -1,126 +1,78 @@
 /// @file
 
 #include <cstdio>
-#include <unistd.h>
+//#include <unistd.h>
 
 #ifdef _WIN32
 #include <winsock2.h>
-#include <ws2ipdef.h>
 #else
 #include <sys/socket.h>
 #include <netinet.h>
 #endif
 
 #include "Network.hpp"
-
-#ifdef _WIN32
-WSAData gWinSockData{};
-#endif
-
-constexpr auto nInvalidSocket{-1};
+#include "INetworkImpl.hpp"
+#include "NetServer.hpp"
+#include "NetClient.hpp"
 
 // TODO: IPv6 support
 
-CNetwork::CNetwork() = default;
+CNetwork::CNetwork(INetworkImpl *apImpl) : mpImpl(apImpl){}
+
 CNetwork::~CNetwork() = default;
 
 bool CNetwork::Init()
 {
+	if(mbInitialized)
+		return true; // TODO: false?
+	
 	printf("CNetwork::Init\n");
 	
-#ifdef _WIN32
-	int nResult{WSAStartup(MAKEWORD(2, 2), &gWinSockData)};
-	
-	if(nResult != 0)
-	{
-		printf("WinSock startup failed: %d\n", nResult);
+	if(!mpImpl->Init())
 		return false;
-	};
-#endif
 	
 	//if(!ConnectClient("127.0.0.1", nServerPort))
 		//return false;
 	
+	mbInitialized = true;
 	return true;
 };
 
 void CNetwork::Shutdown()
 {
-	//shutdown(svsock, SHUT_RDWR); // TODO
-	
-#ifdef _WIN32
-	closesocket(svsock);
-#else
-	close(svsock);
-#endif
+	if(!mbInitialized)
+		return;
 
+	if(mpServer)
+		mpServer.release();
+	
 	mbServerStarted = false;
 	
-	//shutdown(clsock, SHUT_RDWR); // TODO
+	if(mpClient)
+		mpClient.release();
 	
-#ifdef _WIN32
-	closesocket(clsock);
-#else
-	close(clsock);
-#endif
-
 	mbClientStarted = false;
 	
-#ifdef _WIN32
-	WSACleanup();
-#endif
+	mpImpl->Shutdown();
 };
 
 void CNetwork::Update()
 {
+	if(!mbInitialized)
+		return;
+	
 	if(mbServerStarted)
-	{
-		char sMsg[256]{};
-		int nRetVal{recv(svsock, sMsg, sizeof(sMsg), 0)};
-		
-		if(nRetVal < 0)
-		{
-			//if(WSAGetLastError() == WSAEWOULDBLOCK)
-				//return;
-		};
-		
-		printf("[Server] Got: %s\n", sMsg);
-	};
+		if(mpServer)
+			mpServer->Receive();
 };
 
 bool CNetwork::StartServer(int anPort)
 {
-	svsock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP); // AF_INET6
+	if(mbServerStarted)
+		return true;
 	
-	if(svsock == nInvalidSocket)
-		return false;
-	
-#ifdef _WIN32
-	unsigned long mode{1};
-	ioctlsocket(svsock, FIONBIO, &mode);
-#endif
-	
-	static sockaddr_in svadr{};
-	//static sockaddr_in6 svadr{};
-	memset(&svadr, 0, sizeof(svadr));
-	
-	svadr.sin_family = AF_INET;
-	svadr.sin_port = htons(anPort);
-	svadr.sin_addr.s_addr = htonl(INADDR_ANY);
-	/*
-	svadr.sin6_family = AF_INET6;
-	svadr.sin6_port = htons(anPort);
-	svadr.sin6_addr.s_addr = htonl(INADDR_ANY);
-	*/
-	
-	if(bind(svsock, (sockaddr*)&svadr, sizeof(svadr)) == -1)
-	{
-		printf("CNetwork::StartServer: Binding failed! %d (%d, %p, %d)\n", WSAGetLastError(), svsock, (sockaddr*)&svadr, sizeof(svadr));
-		return false;
-	};
-	
-	//if(listen(svsock, 10) == -1)
-		//return false;
+	//if(!mbServer)
+		mpServer = std::make_unique<CNetServer>(anPort);
 	
 	mbServerStarted = true;
 	printf("Server started! (port: %d)\n", anPort);
@@ -129,43 +81,26 @@ bool CNetwork::StartServer(int anPort)
 
 bool CNetwork::StartClient()
 {
-	clsock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP); // AF_INET6
+	if(mbClientStarted)
+		return true;
 	
-	if(clsock == nInvalidSocket)
-		return false;
-	
-	//if(bind(clsock, (sockaddr*)&cladr, sizeof(sockaddr)) == -1)
-		//return false;
+	//if(!mpClient)
+		mpClient = std::make_unique<CNetClient>();
 	
 	mbClientStarted = true;
 	printf("Client started!\n");
 	return true;
 };
 
-bool CNetwork::ConnectClient(const char *asAdr, int anPort = nServerPort)
+bool CNetwork::ConnectClient(const char *asAdr, int anPort)
 {
 	if(!mbClientStarted)
 		return false;
 	
-	static sockaddr_in remoteadr{};
-	//static sockaddr_in6 remoteadr{};
-	memset(&remoteadr, 0, sizeof(remoteadr));
+	if(!mpClient)
+		return false;
 	
-	remoteadr.sin_family = AF_INET; // AF_INET6
-	remoteadr.sin_addr.s_addr = inet_addr(asAdr);
-	remoteadr.sin_port = htons(anPort);
-	/*
-	remoteadr.sin6_family = AF_INET6;
-	remoteadr.sin6_addr.s_addr = inet_addr(asAdr);
-	remoteadr.sin6_port = htons(anPort);
-	*/
-	//static res = inet_pton(AF_INET6, asAdr, &remoteadr.sin6_addr);
-	
-	//if(connect(clsock, (sockaddr*)&remoteadr, sizeof(remoteadr)) == -1)
-		//return false;
-	
-	//printf("Client connected! (adr: %s, port: %n)\n", asAdr, anPort);
-	return true;
+	return mpClient->Connect(asAdr, anPort);
 };
 
 bool CNetwork::ClientSendConnectionless(const char *asAdr, int anPort, const char *asMsg)
@@ -173,31 +108,8 @@ bool CNetwork::ClientSendConnectionless(const char *asAdr, int anPort, const cha
 	if(!mbClientStarted)
 		return false;
 	
-	char sMsg[256]{};
-	sprintf(sMsg, "%s", asMsg);
-	
-	static sockaddr_in remoteadr{};
-	//static sockaddr_in6 remoteadr{};
-	memset(&remoteadr, 0, sizeof(remoteadr));
-	
-	remoteadr.sin_family = AF_INET; // AF_INET6
-	remoteadr.sin_addr.s_addr = inet_addr(asAdr);
-	remoteadr.sin_port = htons(anPort);
-	
-	int nBytesSent = sendto(clsock, sMsg, sizeof(sMsg), 0, (sockaddr*)&remoteadr, sizeof(remoteadr));
-	
-	if(nBytesSent < 0)
-	{
-#ifdef _WIN32
-		printf("Error sending packet: %d\n", WSAGetLastError());
-#else
-		printf("Error sending packet: %s\n", strerror(errno));
-#endif
+	if(!mpClient)
 		return false;
-	};
 	
-	sprintf(sMsg, "[Cl->Sv] %s", asMsg);
-	
-	printf("%s\n", sMsg);
-	return true;
+	return mpClient->SendConnectionless(asAdr, anPort, asMsg);
 };
