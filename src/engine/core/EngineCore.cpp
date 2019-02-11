@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-#include "shiftutil/shared_lib.hpp"
+#include "konbini/shared_lib.hpp"
 
 #include "EngineCore.hpp"
 #include "CoreEnv.hpp"
@@ -172,10 +172,10 @@ bool CEngineCore::Frame()
 
 bool CEngineCore::InitPhysics()
 {
-	static shiftutil::shared_lib PhysicsLib("VEnginePhysics");
+	static konbini::shared_lib PhysicsLib("VEnginePhysics");
 	
-	//if(!PhysicsLib)
-		//return false;
+	if(!PhysicsLib)
+		return false;
 	
 	auto fnGetPhysics{PhysicsLib.getexportfunc<pfnGetPhysics>("GetPhysics")};
 	
@@ -192,10 +192,10 @@ bool CEngineCore::InitPhysics()
 
 bool CEngineCore::InitNetworking()
 {
-	static shiftutil::shared_lib NetworkLib("VEngineNetwork");
+	static konbini::shared_lib NetworkLib("VEngineNetwork");
 	
-	//if(!NetworkLib)
-		//return false;
+	if(!NetworkLib)
+		return false;
 	
 	auto fnGetNetwork{NetworkLib.getexportfunc<pfnGetNetwork>("GetNetwork")};
 	
@@ -215,10 +215,10 @@ bool CEngineCore::InitNetworking()
 
 bool CEngineCore::InitScripting()
 {
-	static shiftutil::shared_lib ScriptLib("VEngineScript");
+	static konbini::shared_lib ScriptLib("VEngineScript");
 	
-	//if(!ScriptLib)
-		//return false;
+	if(!ScriptLib)
+		return false;
 	
 	auto fnGetScript{ScriptLib.getexportfunc<pfnGetScript>("GetScript")};
 	

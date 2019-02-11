@@ -1,6 +1,3 @@
-[submodule "shiftutil"]
-	path = external/shiftutil
-	url = https://github.com/BlackPhrase/shiftutil
 [submodule "iniparser"]
 	path = external/iniparser
 	url = https://github.com/ndevilla/iniparser

@@ -2,7 +2,7 @@
 
 #include <cstdio>
 
-#include "shiftutil/shared_lib.hpp"
+#include "konbini/shared_lib.hpp"
 
 #include "EngineServer.hpp"
 #include "EngineEnv.hpp"
@@ -56,10 +56,10 @@ void CEngineServer::Frame()
 
 bool CEngineServer::InitGame(/*const std::string &asName*/) // TODO: should be allow this?
 {
-	static shiftutil::shared_lib GameLib("VEngineGame");
+	static konbini::shared_lib GameLib("VEngineGame");
 	
-	//if(!GameLib)
-		//return false;
+	if(!GameLib)
+		return false;
 	
 	auto fnGetGame{GameLib.getexportfunc<pfnGetGame>("GetGame")};
 	

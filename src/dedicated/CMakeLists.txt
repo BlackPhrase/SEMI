@@ -1,7 +1,7 @@
 project(VEngine-DedicatedLauncher)
 
 include_directories(
-	${CMAKE_SOURCE_DIR}/external/shiftutil/include
+	${CMAKE_SOURCE_DIR}/external/konbinilib/include
 )
 
 file(GLOB PROJECT_SOURCES

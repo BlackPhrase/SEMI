@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include "shiftutil/shared_lib.hpp"
+#include "konbini/shared_lib.hpp"
 
 #include "EngineClient.hpp"
 #include "EngineEnv.hpp"

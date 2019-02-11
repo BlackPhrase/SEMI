@@ -5,8 +5,8 @@
 
 #include <string>
 
+#include "konbini/shared_lib.hpp"
 #include "vengine/IEngineModule.hpp"
-#include "shiftutil/shared_lib.hpp"
 
 //struct IEngineModule;
 
@@ -30,10 +30,10 @@ public:
 	 */
 	static SModuleHandle *LoadByName(const std::string &asName)
 	{
-		shiftutil::shared_lib ModuleLib(asName.c_str()); // TODO: why only C-string?
+		konbini::shared_lib ModuleLib(asName);
 		
-		//if(!ModuleLib)
-			//return nullptr;
+		if(!ModuleLib)
+			return nullptr;
 		
 		auto pfnModuleMain{ModuleLib.getexportfunc<>("VEngineModuleMain")};
 		
