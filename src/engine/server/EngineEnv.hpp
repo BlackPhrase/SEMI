@@ -7,7 +7,7 @@
 class CEngineEnv final : public IEngineEnv
 {
 public:
-	CEngineEnv(ILogger *apLogger, ICmdRegistry *apCmdRegistry, ICvarRegistry *apCvarRegistry, IPhysics *apPhysics);
+	CEngineEnv(ILogger *apLogger, ICmdRegistry *apCmdRegistry, ICvarRegistry *apCvarRegistry, IPhysics *apPhysics, IScript *apScript, INetServer *apServer);
 	~CEngineEnv();
 	
 	ILogger *GetLogger() const override {return mpLogger;}
@@ -16,9 +16,15 @@ public:
 	ICvarRegistry *GetCvarRegistry() const override {return mpCvarRegistry;}
 	
 	IPhysics *GetPhysics() const override {return mpPhysics;}
+	
+	IScript *GetScript() const override {return mpScript;}
+	
+	INetServer *GetServer() const override {return mpServer;} // TODO: GetNetServer?
 private:
 	ILogger *mpLogger{nullptr};
 	ICmdRegistry *mpCmdRegistry{nullptr};
 	ICvarRegistry *mpCvarRegistry{nullptr};
 	IPhysics *mpPhysics{nullptr};
+	IScript *mpScript{nullptr};
+	INetServer *mpServer{nullptr};
 };

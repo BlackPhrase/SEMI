@@ -8,6 +8,8 @@
 struct ICmdRegistry;
 struct ICvarRegistry;
 struct IPhysics;
+struct IScript;
+struct INetServer;
 
 struct IEngineEnv
 {
@@ -22,4 +24,10 @@ struct IEngineEnv
 	
 	///
 	virtual IPhysics *GetPhysics() const = 0;
+	
+	///
+	virtual IScript *GetScript() const = 0;
+	
+	///
+	virtual INetServer *GetServer() const = 0;
 };
