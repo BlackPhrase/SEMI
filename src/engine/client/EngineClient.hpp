@@ -7,6 +7,8 @@
 #include "client/IEngineClient.hpp"
 
 struct IRenderWindow;
+struct IInput;
+struct ISound;
 struct IClientGame;
 class CEngineEnv;
 class CInputEventDispatcher;
@@ -24,6 +26,8 @@ public:
 	
 	INetClient *GetLocalClient() const override {return nullptr;}
 private:
+	bool InitInput();
+	bool InitSound();
 	bool InitGame();
 	
 	std::unique_ptr<CEngineEnv> mpEnv;
@@ -31,5 +35,7 @@ private:
 	std::unique_ptr<IRenderWindow> mpMainWindow;
 	
 	ICoreEnv *mpCoreEnv{nullptr};
+	IInput *mpInput{nullptr};
+	ISound *mpSound{nullptr};
 	IClientGame *mpGame{nullptr};
 };
