@@ -1,13 +1,13 @@
 /// @file
 
 #include "CommonTypes.hpp"
-#include "ScriptLua.hpp"
+#include "Script.hpp"
 
 C_EXPORT IScript *GetScript(int anVersion)
 {
 	if(anVersion == IScript::Version)
 	{
-		static CScriptLua Script;
+		static CScript Script(apCoreEnv);
 		return &Script;
 	};
 };

@@ -17,10 +17,7 @@ extern "C" int test(lua_State *apState)
 	return 0;
 };
 
-CScriptLua::CScriptLua() = default;
-CScriptLua::~CScriptLua() = default;
-
-bool CScriptLua::Init()
+CScriptLua::CScriptLua()
 {
 	mpState = luaL_newstate();
 	
@@ -34,7 +31,6 @@ bool CScriptLua::Init()
 	if(nResult != LUA_OK)
 	{
 		PrintError();
-		return false;
 	};
 	
 	nResult = lua_pcall(mpState, 0, 0, 0);
@@ -42,19 +38,12 @@ bool CScriptLua::Init()
 	if(nResult != LUA_OK)
 	{
 		PrintError();
-		return false;
 	};
-
-	return true;
 };
 
-void CScriptLua::Shutdown()
+CScriptLua::~CScriptLua()
 {
 	lua_close(mpState);
-};
-
-void CScriptLua::Update(float afTimeStep)
-{
 };
 
 void CScriptLua::CallFunc(const char *asName)

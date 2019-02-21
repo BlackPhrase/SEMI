@@ -6,16 +6,11 @@
 
 typedef struct lua_State lua_State;
 
-class CScriptLua final : public IScript
+class CScriptLua final : public IScriptVM
 {
 public:
 	CScriptLua();
 	~CScriptLua();
-	
-	bool Init() override;
-	void Shutdown() override;
-	
-	void Update(float afTimeStep) override;
 	
 	void CallFunc(const char *asName) override;
 private:
