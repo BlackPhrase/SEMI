@@ -29,4 +29,4 @@ struct IScript
 	virtual void DestroyVM(IScriptVM *apVM) = 0;
 };
 
-using pfnGetScript = IScript *(*)(int anVersion);
+using pfnGetScript = IScript *(*)(int anVersion, const ICoreEnv &apCoreEnv);

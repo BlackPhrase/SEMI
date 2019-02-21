@@ -5,6 +5,7 @@
 
 constexpr auto nServerPort{308};
 
+struct ICoreEnv;
 struct INetClient;
 struct INetServer;
 
@@ -34,4 +35,4 @@ struct INetwork
 	virtual bool ClientSendConnectionless(const char *asAdr, int anPort, const char *asMsg) = 0;
 };
 
-using pfnGetNetwork = INetwork *(*)(int anVersion);
+using pfnGetNetwork = INetwork *(*)(int anVersion, const ICoreEnv &apCoreEnv);

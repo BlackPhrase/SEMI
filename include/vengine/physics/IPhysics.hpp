@@ -3,6 +3,7 @@
 
 #pragma once
 
+struct ICoreEnv;
 struct IPhysicsWorld;
 
 struct IPhysics
@@ -18,4 +19,4 @@ struct IPhysics
 	//virtual void DestroyWorld(IPhysicsWorld *apWorld) = 0;
 };
 
-using pfnGetPhysics = IPhysics *(*)(int anVersion);
+using pfnGetPhysics = IPhysics *(*)(int anVersion, const ICoreEnv &apCoreEnv);
