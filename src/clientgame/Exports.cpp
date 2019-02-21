@@ -10,4 +10,6 @@ C_EXPORT IClientGame *GetClientGame(int anVersion)
 		static CClientGame ClientGame;
 		return &ClientGame;
 	};
+	
+	return nullptr;
 };

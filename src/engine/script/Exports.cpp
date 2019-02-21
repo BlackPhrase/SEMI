@@ -10,4 +10,6 @@ C_EXPORT IScript *GetScript(int anVersion)
 		static CScript Script(apCoreEnv);
 		return &Script;
 	};
+	
+	return nullptr;
 };

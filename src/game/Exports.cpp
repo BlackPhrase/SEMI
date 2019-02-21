@@ -10,4 +10,6 @@ C_EXPORT IGame *GetGame(int anVersion)
 		static CGame Game;
 		return &Game;
 	};
+	
+	return nullptr;
 };

@@ -10,4 +10,6 @@ C_EXPORT IPhysics *GetPhysics(int version)
 		static CPhysics Physics;
 		return &Physics;
 	};
+	
+	return nullptr;
 };

@@ -20,4 +20,6 @@ C_EXPORT INetwork *GetNetwork(int version)
 		static CNetwork Network(&NetworkImpl);
 		return &Network;
 	};
+	
+	return nullptr;
 };
