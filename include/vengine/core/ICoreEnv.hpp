@@ -12,6 +12,7 @@ struct ICmdRegistry;
 struct ICmdProcessor;
 struct IPhysics;
 struct INetwork;
+struct IScript;
 
 struct ICoreEnv
 {
@@ -41,6 +42,9 @@ struct ICoreEnv
 	
 	///
 	virtual INetwork *GetNetwork() const = 0;
+	
+	///
+	virtual IScript *GetScript() const = 0;
 	
 	///
 	virtual void Stop() = 0;
