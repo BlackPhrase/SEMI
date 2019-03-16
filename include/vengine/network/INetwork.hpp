@@ -3,7 +3,8 @@
 
 #pragma once
 
-constexpr auto nServerPort{308};
+constexpr auto nDefaultServerPort{308};
+constexpr auto nDefaultServerClientCount{1};
 
 struct ICoreEnv;
 struct INetClient;
@@ -23,16 +24,17 @@ struct INetwork
 	///
 	virtual void Update() = 0;
 	
-	///
-	//virtual INetServer *StartServer() = 0; // TODO
-	virtual bool StartServer(int anPort = nServerPort) = 0;
+	struct ServerStartSettings
+	{
+		int mnPort{nDefaultServerPort};
+		int mnMaxClients{nDefaultServerClientCount};
+	};
 	
 	///
-	//virtual INetClient *StartClient() = 0; // TODO
-	virtual bool StartClient() = 0;
+	virtual INetServer *StartServer(const ServerStartSettings &apSettings /*= ServerStartSettings()*/) = 0;
 	
 	///
-	virtual bool ClientSendConnectionless(const char *asAdr, int anPort, const char *asMsg) = 0;
+	virtual INetClient *StartClient() = 0;
 };
 
 using pfnGetNetwork = INetwork *(*)(int anVersion, const ICoreEnv &apCoreEnv);
