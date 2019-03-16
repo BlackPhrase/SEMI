@@ -57,11 +57,9 @@ bool CNetClient::Connect(const char *asAdr, int anPort)
 	return true;
 };
 
-/*
 void CNetClient::Disconnect(const char *reason, ...)
 {
 };
-*/
 
 bool CNetClient::SendConnectionless(const char *asAdr, int anPort, const char *asMsg)
 {
@@ -91,4 +89,14 @@ bool CNetClient::SendConnectionless(const char *asAdr, int anPort, const char *a
 	sprintf(sMsg, "[Cl->Sv] %s", asMsg);
 	printf("%s\n", sMsg);
 	return true;
+};
+
+void CNetClient::SendSequencedPacket(const char *asAdr, int anPort, int anSeqNum, int anClientLastAck, const void *apData)
+{
+	// TODO
+};
+
+void CNetClient::ReceiveSequencedPacket(const char *asAdr, int anPort, int *anSeqNum, int *anServerLastAck, void *apData)
+{
+	// TODO
 };
