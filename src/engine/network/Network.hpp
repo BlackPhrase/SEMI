@@ -13,7 +13,7 @@ class CNetClient;
 class CNetwork final : public INetwork
 {
 public:
-	CNetwork(INetworkImpl *apImpl);
+	CNetwork(const ICoreEnv &apCoreEnv, INetworkImpl *apImpl);
 	~CNetwork();
 	
 	bool Init() override;
@@ -21,19 +21,18 @@ public:
 	
 	void Update() override;
 	
-	bool StartServer(int anPort = nServerPort) override;
-	bool StartClient() override;
-	
-	bool ClientSendConnectionless(const char *asAdr, int anPort, const char *asMsg) override;
+	INetServer *StartServer(const ServerStartSettings &apSettings) override;
+	INetClient *StartClient() override;
 private:
-	bool ConnectClient(const char *asAdr, int anPort = nServerPort);
+	bool ConnectClient(const char *asAdr, int anPort = nDefaultServerPort);
 	
 	std::unique_ptr<CNetServer> mpServer;
 	std::unique_ptr<CNetClient> mpClient;
+	
+	const ICoreEnv &mpCoreEnv;
 	
 	INetworkImpl *mpImpl{nullptr};
 	
 	bool mbInitialized{false};
 	bool mbServerStarted{false};
-	bool mbClientStarted{false};
 };

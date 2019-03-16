@@ -17,7 +17,7 @@
 
 // TODO: IPv6 support
 
-CNetwork::CNetwork(INetworkImpl *apImpl) : mpImpl(apImpl){}
+CNetwork::CNetwork(const ICoreEnv &apCoreEnv, INetworkImpl *apImpl) : mpCoreEnv(apCoreEnv), mpImpl(apImpl){}
 
 CNetwork::~CNetwork() = default;
 
@@ -51,8 +51,6 @@ void CNetwork::Shutdown()
 	if(mpClient)
 		mpClient.release();
 	
-	mbClientStarted = false;
-	
 	mpImpl->Shutdown();
 };
 
@@ -66,50 +64,35 @@ void CNetwork::Update()
 			mpServer->Receive();
 };
 
-bool CNetwork::StartServer(int anPort)
+INetServer *CNetwork::StartServer(const ServerStartSettings &apSettings)
 {
 	if(mbServerStarted)
-		return true;
+		return mpServer.get();
 	
 	//if(!mbServer)
-		mpServer = std::make_unique<CNetServer>(anPort);
+		mpServer = std::make_unique<CNetServer>(apSettings.mnPort);
 	
 	mbServerStarted = true;
-	printf("Server started! (port: %d)\n", anPort);
-	return true;
+	printf("Server started! (port: %d)\n", apSettings.mnPort);
+	return mpServer.get();
 };
 
-bool CNetwork::StartClient()
+INetClient *CNetwork::StartClient()
 {
-	if(mbClientStarted)
-		return true;
+	if(mpClient)
+		return mpClient.get();
 	
 	//if(!mpClient)
 		mpClient = std::make_unique<CNetClient>();
 	
-	mbClientStarted = true;
 	printf("Client started!\n");
-	return true;
+	return mpClient.get();
 };
 
 bool CNetwork::ConnectClient(const char *asAdr, int anPort)
 {
-	if(!mbClientStarted)
-		return false;
-	
 	if(!mpClient)
 		return false;
 	
 	return mpClient->Connect(asAdr, anPort);
-};
-
-bool CNetwork::ClientSendConnectionless(const char *asAdr, int anPort, const char *asMsg)
-{
-	if(!mbClientStarted)
-		return false;
-	
-	if(!mpClient)
-		return false;
-	
-	return mpClient->SendConnectionless(asAdr, anPort, asMsg);
 };
