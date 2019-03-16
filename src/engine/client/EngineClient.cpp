@@ -19,24 +19,7 @@
 #include "core/ICvar.hpp"
 #include "core/IConfig.hpp"
 
-#include "client/IInputEventListener.hpp"
-
-class CTestInputEventListener final : public IInputEventListener
-{
-public:
-	CTestInputEventListener() = default;
-	~CTestInputEventListener() = default;
-	
-	void OnKeyPressed(int anKey) override
-	{
-		printf("Key %d pressed...\n", anKey);
-	};
-	
-	void OnKeyReleased(int anKey) override
-	{
-		printf("Key %d released...\n", anKey);
-	};
-};
+#include "TestInputEventListener.hpp"
 
 CEngineClient::CEngineClient() = default;
 CEngineClient::~CEngineClient() = default;
