@@ -10,6 +10,7 @@
 #endif
 
 #include "NetServer.hpp"
+#include "IClient.hpp"
 
 CNetServer::CNetServer(int anPort)
 {
@@ -68,5 +69,51 @@ void CNetServer::Receive()
 			//return;
 	};
 	
-	printf("[Server] Got: %s\n", sMsg);
+	if(HandleConnectionless())
+		return;
+	
+	printf("[Server] Got: %s from someone\n", sMsg);
+};
+
+void CNetServer::BroadcastMsg(INetMsg *apMsg)
+{
+	for(auto It : mvClients)
+		if(It->IsConnected())
+			It->SendMsg(apMsg);
+};
+
+void CNetServer::AddConnectionlessMsgHandler(IConnectionlessMsgHandler *apHandler)
+{
+	if(!apHandler)
+		return;
+	
+	mvConnectionlessMsgHandlers.push_back(apHandler);
+};
+
+int CNetServer::FindFreeSlot() const
+{
+	// TODO
+	return 0;
+};
+
+bool CNetServer::HandleConnectionless()
+{
+	// TODO
+	return false;
+};
+
+bool CNetServer::SendConnectionless(const char *asAdr, int anPort, const char *asMsg)
+{
+	// TODO
+	return false;
+};
+
+void CNetServer::SendSequencedPacket(const char *asAdr, int anPort, int anSeqNum, int anServerLastAck, const void *apData)
+{
+	// TODO
+};
+
+void CNetServer::ReceiveSequencedPacket(const char *asAdr, int anPort, int *anSeqNum, int *anClientLastAck, void *apData)
+{
+	// TODO
 };
