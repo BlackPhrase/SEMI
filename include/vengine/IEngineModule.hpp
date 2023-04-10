@@ -2,36 +2,55 @@
 
 #pragma once
 
-/// Main module export
-using pfnModuleMain = void (*)();
+struct ICoreEnv;
 
-struct IFactory
+/// Main module export
+using pfnModuleMain = IEngineModule *(*)(const ICoreEnv &aCoreEnv);
+//using pfnModuleInit = int (*)(const ICoreEnv &aCoreEnv);
+//using pfnModuleShutdown = void (*)(const ICoreEnv &aCoreEnv);
+
+struct SEngineModuleInfo
+{
+	const char *msName{""};
+	const char *msVersion{""};
+	const char *msAuthor{""};
+};
+
+struct IBaseInterface
 {
 	///
-	virtual void *GetInterface(void *type, int version) const = 0;
-	
-	/// Templated version of the above method
-	template<typename T>
-	T *GetInterface(int version) const
-	{
-		return static_cast<T*>(GetInterface(T, version));
-	};
+	//void (*Release)();
 };
 
 struct IEngineModule
 {
 	///
-	virtual IFactory *GetFactory() const = 0;
+	//void (*Release)();
+	
+	///
+	//void (*AddRef)();
+	
+	///
+	void *(*GetInterface)(const char *asName, int anVersion);
 };
 
-class CBaseEngineModule : public IEngineModule
+class CEngineModuleWrapper
 {
 public:
-	CBaseEngineModule() = default;
-	~CBaseEngineModule() = default;
+	CEngineModuleWrapper(IEngineModule *apModule) : mpModule(apModule){}
+	~CEngineModuleWrapper() = default;
 	
-	IFactory *GetFactory() const override
+	void *GetInterface(const char *asName, int anVersion) const
 	{
-		return nullptr;
+		return mpModule->GetInterface(asName, anVersion);
 	};
+	
+	/// Templated version of the above method
+	template<typename T>
+	T *GetInterface(const char *asName, int anVersion) const
+	{
+		return static_cast<T*>(GetInterface(asName, anVersion));
+	};
+private:
+	IEngineModule *mpModule{nullptr};
 };
