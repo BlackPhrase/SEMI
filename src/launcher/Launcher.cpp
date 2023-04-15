@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018-2019, 2023 BlackPhrase
+ * Copyright 2017-2019, 2023 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -23,13 +23,17 @@ bool Init()
 {
 	IEngineCore::InitProps VEngineInitProps{};
 	
-	VEngineInitProps.meExecMode = IEngineCore::Mode::DedicatedServer;
+	// Allow to start the engine in dedicated client mode for developers
+#ifdef VENGINE_DEV
+	for(int i = 0; i < argc; ++i)
+		if(!strcmp(argv[i], "-clientonly"))
+			VEngineInitProps.ExecMode = IEngineCore::Mode::DedicatedClient;
+#endif
+	
 	VEngineInitProps.msCmdLine = ""; // TODO
 	
 	if(!gpEngine->Init(VEngineInitProps))
 		return false;
-	
-	return true;
 };
 
 void Run()
@@ -40,12 +44,12 @@ void Run()
 	gpEngine->Shutdown();
 };
 
-int main(int argc, char **argv)
+int VEngineMain(int argc, char **argv)
 {
 	konbini::shared_lib EngineCoreLib("VEngineCore");
 	
 	if(!EngineCoreLib)
-		throw std::runtime_error("Failed to load the engine code module!");
+		throw std::runtime_error("Failed to load the engine core module!");
 	
 	auto fnGetEngineCore{EngineCoreLib.getexportfunc<pfnGetEngineCore>("GetEngineCore")};
 	
