@@ -15,11 +15,9 @@
 
 struct ICommandLine;
 struct IMemoryManager;
-struct ILogger;
 struct IConfig;
-struct ICvarRegistry;
-struct ICmdRegistry;
-struct ICmdProcessor;
+struct ISystem;
+struct IEngineModuleManager;
 struct IPhysics;
 struct INetwork;
 struct IScript;
@@ -33,19 +31,13 @@ struct ICoreEnv
 	virtual IMemoryManager *GetMemoryManager() const = 0;
 	
 	///
-	virtual ILogger *GetLogger() const = 0;
-	
-	///
 	virtual IConfig *GetConfig() const = 0;
 	
 	///
-	virtual ICvarRegistry *GetCvarRegistry() const = 0;
+	virtual ISystem *GetSystem() const = 0;
 	
 	///
-	virtual ICmdRegistry *GetCmdRegistry() const = 0;
-	
-	///
-	virtual ICmdProcessor *GetCmdProcessor() const = 0;
+	virtual IEngineModuleManager *GetEngineModuleManager() const = 0;
 	
 	///
 	virtual IPhysics *GetPhysics() const = 0;
