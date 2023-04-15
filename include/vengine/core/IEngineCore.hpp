@@ -21,29 +21,34 @@ struct IEngineCore
 	/// Core initialization mode
 	enum class Mode : int
 	{
-		ListenServer = 0, ///< Run as listenserver (client + server)
+		Host = 0,         ///< Run in host mode (client + server)
 		DedicatedServer,  ///< Run in dedicated server mode (server-only)
 		DedicatedClient   ///< Run in dedicated client mode (client-only)
 	};
 	
 	/// Core initialization preferences
-	struct InitParams
+	struct InitProps
 	{
-		Mode ExecMode{Mode::ListenServer}; ///<
+		Mode meExecMode{Mode::Host}; ///< Requested execution mode
+		
+		const char *msCmdLine{""}; ///< App's launch arguments
+		//int argc{-1};
+		//char **argv{nullptr};
 	};
 	
 	/**
 	 * Try to initialize the core
 	 *
-	 * @param InitParams - initialization preferences
-	 * @return true if success
+	 * @param InitProps Initialization preferences
+	 * @return true if success, false otherwise
 	 */
-	virtual bool Init(const InitParams &aInitParams) = 0;
+	virtual bool Init(const InitProps &aInitProps) = 0;
 	
 	/// Shutdown the core (if initialized)
-	virtual void Shutdown() = 0;
+	virtual void Shutdown() = 0; // TODO: remove?
 	
 	/// Run a single frame
+	/// @return true or false depending on the result
 	virtual bool Frame() = 0;
 	
 	/// Request engine to shutdown
