@@ -13,12 +13,14 @@
 #pragma once
 
 struct ICoreEnv;
+struct IEngineModule;
 
 /// Main module export
 using pfnModuleMain = IEngineModule *(*)(const ICoreEnv &aCoreEnv);
 //using pfnModuleInit = int (*)(const ICoreEnv &aCoreEnv);
 //using pfnModuleShutdown = void (*)(const ICoreEnv &aCoreEnv);
 
+/*
 struct SEngineModuleInfo
 {
 	const char *msName{""};
@@ -30,37 +32,30 @@ struct IBaseInterface
 {
 	///
 	//void (*Release)();
+	//virtual void Release() = 0;
 };
+*/
 
 struct IEngineModule
 {
 	///
 	//void (*Release)();
+	//virtual void Release() = 0;
 	
 	///
 	//void (*AddRef)();
+	//virtual void AddRef() = 0;
 	
 	///
-	void *(*GetInterface)(const char *asName, int anVersion);
-};
-
-class CEngineModuleWrapper
-{
-public:
-	CEngineModuleWrapper(IEngineModule *apModule) : mpModule(apModule){}
-	~CEngineModuleWrapper() = default;
+	virtual bool OnLoad() = 0;
 	
-	void *GetInterface(const char *asName, int anVersion) const
-	{
-		return mpModule->GetInterface(asName, anVersion);
-	};
+	///
+	virtual bool OnUnload() = 0;
 	
-	/// Templated version of the above method
-	template<typename T>
-	T *GetInterface(const char *asName, int anVersion) const
-	{
-		return static_cast<T*>(GetInterface(asName, anVersion));
-	};
-private:
-	IEngineModule *mpModule{nullptr};
+	///
+	//virtual bool OnReload() = 0;
+	
+	///
+	//void *(*GetInterface)(const char *asName, int anVersion);
+	virtual void *GetInterface(const char *asName, int anVersion) = 0;
 };
