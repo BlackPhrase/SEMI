@@ -1,3 +1,13 @@
+/*
+ * This file is part of V-Engine
+ *
+ * Copyright 2018-2019, 2023 BlackPhrase
+ *
+ * Licensed under terms of the MIT license
+ * See LICENSE.md file for full terms
+ * DO NOT REMOVE THIS NOTICE!
+*/
+
 /// @file
 /// @brief scripting module interface
 
@@ -17,16 +27,8 @@ struct IScript
 	static constexpr auto Version{1};
 	
 	///
-	virtual bool Init() = 0;
-	
-	///
-	virtual void Shutdown() = 0;
-	
-	///
 	virtual IScriptVM *CreateVM() = 0;
 	
 	///
 	virtual void DestroyVM(IScriptVM *apVM) = 0;
 };
-
-using pfnGetScript = IScript *(*)(int anVersion, const ICoreEnv &apCoreEnv);

@@ -1,3 +1,13 @@
+/*
+ * This file is part of V-Engine
+ *
+ * Copyright 2019, 2023 BlackPhrase
+ *
+ * Licensed under terms of the MIT license
+ * See LICENSE.md file for full terms
+ * DO NOT REMOVE THIS NOTICE!
+*/
+
 /// @file
 
 #include "Script.hpp"
@@ -6,15 +16,6 @@
 CScript::CScript(const ICoreEnv &apCoreEnv) : mpCoreEnv(apCoreEnv){}
 
 CScript::~CScript() = default;
-
-bool CScript::Init()
-{
-	return true;
-};
-
-void CScript::Shutdown()
-{
-};
 
 IScriptVM *CScript::CreateVM()
 {

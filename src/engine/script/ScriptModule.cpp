@@ -43,7 +43,7 @@ public:
 			if(anVersion == IScript::Version)
 			{
 				if(!mpScript)
-					mpScript = new mpScript(mCoreEnv);
+					mpScript = new CScript(mCoreEnv);
 				return mpScript;
 			};
 		
