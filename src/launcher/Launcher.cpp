@@ -34,6 +34,8 @@ bool Init()
 	
 	if(!gpEngine->Init(VEngineInitProps))
 		return false;
+	
+	return true;
 };
 
 void Run()

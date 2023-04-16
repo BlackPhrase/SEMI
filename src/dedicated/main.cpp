@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 	konbini::shared_lib EngineCoreLib("VEngineCore");
 	
 	if(!EngineCoreLib)
-		throw std::runtime_error("Failed to load the engine code module!");
+		throw std::runtime_error("Failed to load the engine core module!");
 	
 	auto fnGetEngineCore{EngineCoreLib.getexportfunc<pfnGetEngineCore>("GetEngineCore")};
 	

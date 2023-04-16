@@ -1,4 +1,4 @@
-project(VEngine-DedicatedLauncher)
+project(vengine-dedicated)
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/external/konbinilib/include

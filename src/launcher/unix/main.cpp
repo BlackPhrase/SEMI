@@ -10,11 +10,6 @@
 
 /// @file
 
-#ifdef _WIN32
-#	include <windows.h>
-#	include <tchar.h>
-#endif
-
 extern int VEngineMain(int argc, char **argv);
 
 int main(int argc, char **argv)
