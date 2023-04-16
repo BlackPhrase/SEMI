@@ -1,4 +1,4 @@
-project(VEngine-Client)
+project(vengine-client)
 
 add_definitions(-DGLFW_DLL)
 
@@ -11,11 +11,13 @@ link_directories(
 	${CMAKE_SOURCE_DIR}/external/glfw3/lib
 )
 
-file(GLOB PROJECT_SOURCES
-	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-)
+add_library(${PROJECT_NAME} MODULE)
 
-add_library(${PROJECT_NAME} MODULE ${PROJECT_SOURCES})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} PROJECT_SOURCES)
+
+target_sources(${PROJECT_NAME}
+	PRIVATE ${PROJECT_SOURCES}
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "VEngineClient"

@@ -1,11 +1,23 @@
-project(VEngine-ClientGame)
+project(vengine-clientgame)
 
-file(GLOB PROJECT_SOURCES
-	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+include_directories(
+	${CMAKE_SOURCE_DIR}/external/gwork/include
 )
 
-add_library(${PROJECT_NAME} MODULE ${PROJECT_SOURCES})
+link_directories(
+	${CMAKE_SOURCE_DIR}/external/gwork/lib
+)
+
+add_library(${PROJECT_NAME} MODULE)
+
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} PROJECT_SOURCES)
+
+target_sources(${PROJECT_NAME}
+	PRIVATE ${PROJECT_SOURCES}
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "VEngineClientGame"
 )
+
+target_link_libraries(${PROJECT_NAME} GworkControls)
