@@ -15,15 +15,14 @@
 #include <cstdint>
 //#include <source_location>
 
-struct ICvarAndCmdRegistry;
 struct ICmdProcessor;
 
-//struct ICmd;
+//struct ISysCmd;
 struct ICmdArgs;
 
 using pfnCmdCallback = void (*)(const ICmdArgs &aArgs);
 
-struct ICvar;
+struct ISysVar;
 
 struct ILogSink
 {
@@ -33,6 +32,9 @@ struct ILogSink
 
 struct ISystem
 {
+	/// Interface version
+	static constexpr auto Version{1};
+	
 	///
 	virtual void AddLogSink(ILogSink *apSink) = 0;
 	
@@ -88,13 +90,8 @@ struct ISystem
 	 */
 	virtual bool AddCmd(const char *asName, pfnCmdCallback afnCallback, const char *asDescription = "") = 0;
 	
-	/**
-	 * Find a command by its name
-	 *
-	 * @param asName Name of the command
-	 * @return Pointer to a command or nullptr if not found
-	 */
-	//virtual ICmd *FindCmd(const char *asName) const = 0;
+	///
+	//virtual bool RegisterCmd(ISysCmd *apCmd) = 0;
 	
 	/**
 	 * Removes an already registered command (if present)
@@ -105,6 +102,14 @@ struct ISystem
 	virtual bool RemoveCmd(const char *asName) = 0;
 	
 	/**
+	 * Find a command by its name
+	 *
+	 * @param asName Name of the command
+	 * @return Pointer to a command or nullptr if not found
+	 */
+	//virtual ISysCmd *FindCmd(const char *asName) const = 0;
+	
+	/**
 	 * Create a new variable
 	 *
 	 * @param asName Name of the variable
@@ -112,23 +117,15 @@ struct ISystem
 	 * @param asDescription Variable description (optional)
 	 * @return Pointer to a newly created variable
 	 */
-	virtual ICvar *AddVar(const char *asName, const char *asDefValue, const char *asDescription = "") = 0;
+	virtual ISysVar *AddVar(const char *asName, const char *asDefValue, const char *asDescription = "") = 0;
 	
 	/**
 	 * Register an already present variable
 	 *
-	 * @param apCvar Pointer to the variable
+	 * @param apVar Pointer to the variable
 	 * @return true on success, false otherwise
 	 */
-	//virtual bool RegisterVar(ICvar *apCvar) = 0;
-	
-	/**
-	 * Find a variable by its name
-	 *
-	 * @param asName Name of the variable
-	 * @return Pointer to a variable or nullptr if not found
-	 */
-	virtual ICvar *FindVar(const char *asName) const = 0;
+	//virtual bool RegisterVar(ISysVar *apVar) = 0;
 	
 	/**
 	 * Remove an already present variable
@@ -137,6 +134,14 @@ struct ISystem
 	 * @return true of false depending on the result
 	 */
 	virtual bool RemoveVar(const char *asName) = 0;
+	
+	/**
+	 * Find a variable by its name
+	 *
+	 * @param asName Name of the variable
+	 * @return Pointer to a variable or nullptr if not found
+	 */
+	virtual ISysVar *FindVar(const char *asName) const = 0;
 	
 	///
 	virtual ICmdProcessor *GetCmdProcessor() const = 0;
