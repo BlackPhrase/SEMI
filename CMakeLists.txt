@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.8)
-project(V-Engine VERSION 0.2)
+cmake_minimum_required(VERSION 3.14)
+project(V-Engine VERSION 0.2.5)
 
 message(STATUS "${PROJECT_NAME} v.${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
@@ -17,8 +17,8 @@ endif()
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 set(CMAKE_SHARED_MODULE_PREFIX "")
 
-# We want to use C++17 features
-set(CMAKE_CXX_STANDARD 17)
+# We want to use C++20 features
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Specify output directory (for compiled binaries)
