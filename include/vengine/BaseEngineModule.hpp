@@ -14,7 +14,7 @@
 #pragma once
 
 #include <unordered_map>
-#include <function>
+#include <functional>
 
 #include "IEngineModule.hpp"
 
@@ -30,18 +30,18 @@ public:
 	};
 protected: // TODO: make public?
 	/// A handy method to register new interface which then will be accessible through the GetInterface method
-	/// @param Name of the interface
-	/// @afnCallback A (lambda) function which will be used to (instantiate and) provide access to the actual interface, accepts an int as a requested version number
+	/// @param asName Name of the interface
+	/// @param afnCallback A (lambda) function which will be used to (instantiate and) provide access to the actual interface, accepts an int as a requested version number
 	void RegisterInterface(std::string_view asName, std::function<void*(int)> afnCallback)
 	{
-		mInterfaceMap[asName] = afnCallback;
+		mInterfaceMap.try_emplace(asName, afnCallback);
 	};
-private:	
+private:
 	void *GetInterface(std::string_view asName, int anVersion) const
 	{
 		// TODO: find?
 		if(mInterfaceMap.contains(asName))
-			return mInterfaceMap[asName](anVersion);
+			return mInterfaceMap.at(asName)(anVersion);
 		
 		return nullptr;
 	};

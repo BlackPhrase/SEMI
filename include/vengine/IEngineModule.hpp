@@ -57,5 +57,5 @@ struct IEngineModule
 	
 	///
 	//void *(*GetInterface)(const char *asName, int anVersion);
-	virtual void *GetInterface(const char *asName, int anVersion) = 0;
+	virtual void *GetInterface(const char *asName, int anVersion) const = 0;
 };

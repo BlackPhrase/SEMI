@@ -1,79 +1,108 @@
-/// @file
+/*
+ * This file is part of V-Engine
+ *
+ * Copyright 2023 BlackPhrase
+ *
+ * Licensed under terms of the MIT license
+ * See LICENSE.md file for full terms
+ * DO NOT REMOVE THIS NOTICE!
+*/
 
-#include <vengine/IEngineModule.hpp>
+/// @file
 
 #include <cstdio>
 #include <cstring>
 
 #include <string_view>
 
+#include <CommonTypes.hpp>
+#include <BaseEngineModule.hpp>
+
 void ActuallyDoABarrelRoll()
 {
 	printf("Barrel roll!\n");
 };
 
-struct SSomeInterface
+struct ISomeInterface
 {
-	int mnVersion{1};
+	//int mnVersion{1};
+	static constexpr auto mnVersion{1};
 	
 	///
-	void (*DoABarrelRoll)();
+	//void (*DoABarrelRoll)();
+	virtual void DoABarrelRoll() = 0;
 };
 
-class CBaseEngineModule
+class CSomeInterfaceImpl : public ISomeInterface
 {
 public:
-	CBaseEngineModule(const ICoreEnv &aCoreEnv)
+	void DoABarrelRoll() override
+	{
+		ActuallyDoABarrelRoll();
+	};
+};
+
+class CTestEngineModule : public CBaseEngineModule
+{
+public:
+	CTestEngineModule(const ICoreEnv &aCoreEnv)
 	{
 		// TODO: try to init something
-		
-		mpSomeInterface = new SSomeInterface;
-		mpSomeInterface.DoABarrelRoll = ActuallyDoABarrelRoll;
 	};
 	
-	~CBaseEngineModule()
+	~CTestEngineModule()
 	{
-		delete mpSomeInterface;
+		if(mpSomeInterface)
+		{
+			delete mpSomeInterface;
+			mpSomeInterface = nullptr;
+		};
 		
 		// TODO: call some shutdown procedures here
 	};
 	
-	void *GetInterface(std::string_view asName, int anVersion)
+	bool OnLoad() override
 	{
-		using namespace std::literals;
+		// TODO: try to init something
 		
-		if(asName == "SomeInterface"sv)
-			if(mpSomeInterface->mnVersion == anVersion)
+		mpSomeInterface = new CSomeInterfaceImpl;
+		//mpSomeInterface.DoABarrelRoll = ActuallyDoABarrelRoll;
+		
+		RegisterInterface("SomeInterface", [=, this](int anVersion) -> void* {
+			//if(mpSomeInterface->mnVersion == anVersion)
+			if(ISomeInterface::mnVersion == anVersion)
 				return mpSomeInterface;
+			
+			return nullptr;
+		});
 		
-		return nullptr;
+		return true;
+	};
+	
+	bool OnUnload() override
+	{
+		// TODO: call some shutdown procedures here
+		
+		return true;
 	};
 private:
-	SSomeInterface *mpSomeInterface{nullptr};
-};
-
-CBaseEngineModule *gpTestEngineModule{nullptr};
-
-void *TestEngineModule_GetInterface(const char *asName, int anVersion)
-{
-	std::string_view sInterfaceName{asName};
-	return gpTestEngineModule->GetInterface(sInterfaceName, anVersion);
-};
-
-IEngineModule TestEngineModule = {
-	TestEngineModule_GetInterface
+	ISomeInterface *mpSomeInterface{nullptr};
 };
 
 //
 
-C_EXPORT int SEMIModuleInit(const ICoreEnv &aCoreEnv)
+CTestEngineModule *gpTestEngineModule{nullptr};
+
+// TODO: SEMIModuleInit? VEngineModuleLoad?
+C_EXPORT int VEngineModuleInit(const ICoreEnv &aCoreEnv)
 {
-	gpTestEngineModule = new CBaseEngineModule(aCoreEnv);
+	gpTestEngineModule = new CTestEngineModule(aCoreEnv);
 	
 	return 1;
 };
 
-C_EXPORT void SEMIModuleShutdown(const ICoreEnv &aCoreEnv)
+// TODO: SEMIModuleShutdown? VEngineModuleUnload?
+C_EXPORT void VEngineModuleShutdown(const ICoreEnv &aCoreEnv)
 {
 	if(gpTestEngineModule)
 	{
@@ -84,8 +113,11 @@ C_EXPORT void SEMIModuleShutdown(const ICoreEnv &aCoreEnv)
 
 //
 
-C_EXPORT IEngineModule *SEMIModuleMain(const ICoreEnv &aCoreEnv)
+// TODO: SEMIModuleMain?
+C_EXPORT IEngineModule *VEngineModuleMain(const ICoreEnv &aCoreEnv)
 {
+	static CTestEngineModule TestEngineModule(aCoreEnv);
+	
 	//if(!TestEngineModule.Init(aCoreEnv))
 		//return nullptr;
 	
