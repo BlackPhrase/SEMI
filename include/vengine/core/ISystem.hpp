@@ -17,7 +17,7 @@
 
 struct ICmdProcessor;
 
-//struct ISysCmd;
+struct ISysCmd;
 struct ICmdArgs;
 
 using pfnCmdCallback = void (*)(const ICmdArgs &aArgs);
@@ -90,8 +90,13 @@ struct ISystem
 	 */
 	virtual bool AddCmd(const char *asName, pfnCmdCallback afnCallback, const char *asDescription = "") = 0;
 	
-	///
-	//virtual bool RegisterCmd(ISysCmd *apCmd) = 0;
+	/**
+	 * Register an already present system command
+	 *
+	 * @param apCmd A pointer to the variable instance
+	 * @return true if registered, false otherwise (already present or something)
+	 */
+	virtual bool RegisterCmd(ISysCmd *apCmd) = 0;
 	
 	/**
 	 * Removes an already registered command (if present)
