@@ -13,19 +13,18 @@
 
 #pragma once
 
-struct ICommandLine;
+struct ISystem;
 struct IMemoryManager;
 struct IConfig;
-struct ISystem;
 struct IEngineModuleManager;
-struct IPhysics;
-struct INetwork;
-struct IScript;
+//struct IPhysics;
+//struct INetwork;
+//struct IScript;
 
 struct ICoreEnv
 {
 	///
-	virtual ICommandLine *GetCommandLine() const = 0;
+	virtual ISystem *GetSystem() const = 0;
 	
 	///
 	virtual IMemoryManager *GetMemoryManager() const = 0;
@@ -34,19 +33,16 @@ struct ICoreEnv
 	virtual IConfig *GetConfig() const = 0;
 	
 	///
-	virtual ISystem *GetSystem() const = 0;
-	
-	///
 	virtual IEngineModuleManager *GetEngineModuleManager() const = 0;
 	
 	///
-	virtual IPhysics *GetPhysics() const = 0;
+	//virtual IPhysics *GetPhysics() const = 0;
 	
 	///
-	virtual INetwork *GetNetwork() const = 0;
+	//virtual INetwork *GetNetwork() const = 0;
 	
 	///
-	virtual IScript *GetScript() const = 0;
+	//virtual IScript *GetScript() const = 0;
 	
 	///
 	virtual void Stop() = 0;

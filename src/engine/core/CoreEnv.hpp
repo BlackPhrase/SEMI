@@ -1,47 +1,48 @@
+/*
+ * This file is part of V-Engine
+ *
+ * Copyright 2018, 2023 BlackPhrase
+ *
+ * Licensed under terms of the MIT license
+ * See LICENSE.md file for full terms
+ * DO NOT REMOVE THIS NOTICE!
+*/
+
 /// @file
 
 #pragma once
 
-#include "core/ICoreEnv.hpp"
+#include <core/ICoreEnv.hpp>
 
 struct IEngineCore;
 
 class CCoreEnv final : public ICoreEnv
 {
 public:
-	CCoreEnv(IEngineCore *apCore, ICommandLine *apCommandLine, IMemoryManager *apMemoryManager, ILogger *apLogger, IConfig *apConfig,
-			ICvarRegistry *apCvarRegistry, ICmdRegistry *apCmdRegistry, ICmdProcessor *apCmdProcessor, IPhysics *apPhysics, INetwork *apNetwork);
+	CCoreEnv(IEngineCore *apCore, ISystem *apSystem, IMemoryManager *apMemoryManager, IConfig *apConfig, IEngineModuleContainer *apEngineModuleContainer);
 	~CCoreEnv();
 	
-	ICommandLine *GetCommandLine() const override {return mpCommandLine;}
+	ISystem *GetSystem() const override {return mpSystem;}
 	IMemoryManager *GetMemoryManager() const override {return mpMemoryManager;}
-	ILogger *GetLogger() const override {return mpLogger;}
 	IConfig *GetConfig() const override {return mpConfig;}
+	IEngineModuleContainer *GetEngineModuleContainer() const override {return mpEngineModuleContainer;}
 	
-	ICvarRegistry *GetCvarRegistry() const override {return mpCvarRegistry;}
-	ICmdRegistry *GetCmdRegistry() const override {return mpCmdRegistry;}
-	
-	ICmdProcessor *GetCmdProcessor() const override {return mpCmdProcessor;}
-	
-	IPhysics *GetPhysics() const override {return mpPhysics;}
-	INetwork *GetNetwork() const override {return mpNetwork;}
+	//IPhysics *GetPhysics() const override {return mpPhysics;}
+	//INetwork *GetNetwork() const override {return mpNetwork;}
+	//IScript *GetScript() const override {return mpScript;}
 	
 	void Stop() override;
 	
 	//void SendCmd(const char *asText) override;
 private:
 	IEngineCore *mpCore{nullptr};
-
-	ICommandLine *mpCommandLine{nullptr};
+	
+	ISystem *mpSystem{nullptr};
 	IMemoryManager *mpMemoryManager{nullptr};
-	ILogger *mpLogger{nullptr};
 	IConfig *mpConfig{nullptr};
+	IEngineModuleContainer *mpEngineModuleContainer{nullptr};
 	
-	ICvarRegistry *mpCvarRegistry{nullptr};
-	ICmdRegistry *mpCmdRegistry{nullptr};
-	
-	ICmdProcessor *mpCmdProcessor{nullptr};
-	
-	IPhysics *mpPhysics{nullptr};
-	INetwork *mpNetwork{nullptr};
+	//IPhysics *mpPhysics{nullptr};
+	//INetwork *mpNetwork{nullptr};
+	//IScript *mpScript{nullptr};
 };
