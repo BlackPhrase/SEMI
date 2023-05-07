@@ -14,6 +14,12 @@
 
 #include <core/ISystem.hpp>
 
+class CCmdArgs;
+class CLogger;
+class CCmdProcessor;
+class CSysVarRegistry;
+class CSysCmdRegistry;
+
 class CSystem : public ISystem
 {
 public:
@@ -31,4 +37,12 @@ public:
 	bool RemoveVar(const char *asName) override;
 	
 	ICvar *FindVar(const char *asName) const override;
+	
+	ICmdArgs *GetStartupArgs() const override {return mpStartupArgs;}
+private:
+	CCmdArgs *mpStartupArgs{nullptr};
+	CLogger *mpLogger{nullptr};
+	CCmdProcessor *mpCmdProcessor{nullptr};
+	CSysVarRegistry *mpVarRegistry{nullptr};
+	CSysCmdRegistry *mpCmdRegistry{nullptr};
 };

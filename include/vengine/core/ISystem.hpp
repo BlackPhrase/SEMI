@@ -20,7 +20,7 @@ struct ICmdProcessor;
 struct ISysCmd;
 struct ICmdArgs;
 
-using pfnCmdCallback = void (*)(const ICmdArgs &aArgs);
+using pfnSysCmdCallback = void (*)(const ICmdArgs &aArgs);
 
 struct ISysVar;
 
@@ -51,44 +51,51 @@ struct ISystem
 		LogMessage(__FILE__, __LINE__, asMsg, args...); //std::forward<Args>(args)...);
 	};
 	
+	enum class MsgType : int
+	{
+		Info,
+		Warning,
+		Error
+	};
+	
 	///
-	virtual void impl_log(eMsgType aeType, const char *asMsg, const char *asFileName, uint_least32_t anLine) = 0;
+	virtual void impl_log(MsgType aeType, const char *asMsg, const char *asFileName, uint_least32_t anLine) = 0;
 	
 	///
 	inline void Log(const char *asMsg, ...)
 	{
-		impl_log(eMsgType::Info, asMsg, __FILE__, __LINE__);
-		//impl_log(eMsgType::Info, asMsg, std::experimental::source_location::current::file_name(), std::experimental::source_location::current::line());
+		impl_log(MsgType::Info, asMsg, __FILE__, __LINE__);
+		//impl_log(eMsgType::Info, asMsg, std::experimental::source_location::current().file_name(), std::experimental::source_location::current().line());
 	};
 	
 	///
 	inline void Warning(const char *asMsg, ...)
 	{
-		impl_log(eMsgType::Warning, asMsg, __FILE__, __LINE__);
+		impl_log(MsgType::Warning, asMsg, __FILE__, __LINE__);
 	};
 	
 	///
 	inline void Error(const char *asMsg, ...)
 	{
-		impl_log(eMsgType::Error, asMsg, __FILE__, __LINE__);
+		impl_log(MsgType::Error, asMsg, __FILE__, __LINE__);
 	};
 	
 	///
 	inline void FatalError(const char *asMsg, ...)
 	{
-		impl_log(eMsgType::Error, asMsg, __FILE__, __LINE__);
+		impl_log(MsgType::Error, asMsg, __FILE__, __LINE__);
 		Quit();
 	};
 	
 	/**
-	 * Register a new command
+	 * Create a new system command from a callback function
 	 *
 	 * @param asName Name of the command
 	 * @param afnCallback A callback function that will be called
 	 * @param asDescription The command description string (optional)
 	 * @return true on success, false otherwise
 	 */
-	virtual bool AddCmd(const char *asName, pfnCmdCallback afnCallback, const char *asDescription = "") = 0;
+	virtual bool AddCmd(const char *asName, pfnSysCmdCallback afnCallback, const char *asDescription = "<no desc>") = 0;
 	
 	/**
 	 * Register an already present system command
@@ -147,6 +154,9 @@ struct ISystem
 	 * @return Pointer to a variable or nullptr if not found
 	 */
 	virtual ISysVar *FindVar(const char *asName) const = 0;
+	
+	///
+	virtual ICmdArgs *GetStartupArgs() const = 0;
 	
 	///
 	virtual ICmdProcessor *GetCmdProcessor() const = 0;

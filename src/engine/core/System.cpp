@@ -11,6 +11,10 @@
 /// @file
 
 #include "System.hpp"
+#include "Logger.hpp"
+#include "CmdProcessor.hpp"
+#include "SysVarRegistry.hpp"
+#include "SysCmdRegistry.hpp"
 
 void CSystem::AddLogSink(ILogSink *apSink)
 {
@@ -24,8 +28,11 @@ void CSystem::RemoveLogSink(ILogSink *apSink)
 
 bool CSystem::AddCmd(const char *asName, pfnCmdCallback afnCallback, const char *asDescription)
 {
-	if(FindVar(asName))
+	if(mpVarRegistry->Find(asName))
+	{
+		Error("Can't add a system command called {} as it's already registered as a variable!", asName);
 		return false;
+	};
 	
 	return mpCmdRegistry->Add(asName, afnCallback, asDescription);
 };
@@ -48,10 +55,13 @@ bool CSystem::RemoveCmd(const char *asName)
 	//return mpCmdRegistry->Find(asName);
 //};
 
-ICvar *CSystem::AddVar(const char *asName, const char *asDefValue, const char *asDescription)
+ISysVar *CSystem::AddVar(const char *asName, const char *asDefValue, const char *asDescription)
 {
-	if(FindCmd(asName))
+	if(mpCmdRegistry->Find(asName))
+	{
+		Error("Can't add a system variable called {} as it's already registered as a command!", asName);
 		return nullptr;
+	};
 	
 	return mpVarRegistry->Add(asName, asDefValue, asDescription);
 };
@@ -69,7 +79,7 @@ bool CSystem::RemoveVar(const char *asName)
 	return mpVarRegistry->Remove(asName);
 };
 
-ICvar *CSystem::FindVar(const char *asName) const
+ISysVar *CSystem::FindVar(const char *asName) const
 {
 	return mpVarRegistry->Find(asName);
 };
