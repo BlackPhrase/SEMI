@@ -9,11 +9,12 @@
 */
 
 /// @file
-/// @brief console variable
+/// @brief console variable interface
 
 #pragma once
 
-struct ICvar
+// TODO: IConVar
+struct ISysVar
 {
 	///
 	virtual const char *GetName() const = 0;
