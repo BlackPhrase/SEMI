@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018, 2023 BlackPhrase
+ * Copyright 2023 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -9,7 +9,7 @@
 */
 
 /// @file
-/// @brief Linux platform-specific types & definitions
+/// @brief Unix platform-specific types & definitions
 
 #pragma once
 
@@ -17,7 +17,6 @@
 	#error "You shouldn't use this file directly!"
 #endif
 
-#define VENGINE_EDITOR_LINUX
-#define VENGINE_STANDALONE_LINUX
+#define EXPORT_FUNC [[gnu::visibility("default")]]
 
 /////////////////////////////////////////////////////////////////////

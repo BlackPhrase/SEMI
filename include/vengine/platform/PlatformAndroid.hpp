@@ -9,7 +9,7 @@
 */
 
 /// @file
-/// @brief Linux platform-specific types & definitions
+/// @brief Android platform-specific types & definitions
 
 #pragma once
 
@@ -17,7 +17,6 @@
 	#error "You shouldn't use this file directly!"
 #endif
 
-#define VENGINE_EDITOR_LINUX
-#define VENGINE_STANDALONE_LINUX
+#define VENGINE_ANDROID
 
 /////////////////////////////////////////////////////////////////////
