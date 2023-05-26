@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018-2019, 2023 BlackPhrase
+ * Copyright 2023 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -10,9 +10,9 @@
 
 /// @file
 
-#include "CmdArgs.hpp"
+#include "StartupArgs.hpp"
 
-CCmdArgs::CCmdArgs(const char *asArgs)
+CStartupArgs::CStartupArgs(const char *asArgs)
 {
 	msArgs = asArgs;
 	
@@ -62,16 +62,16 @@ CCmdArgs::CCmdArgs(const char *asArgs)
 		};
 		
 		if(!sKey.empty())
-			mvArgs.try_emplace(sKey, sValue); // TODO: insert_or_assign
+			mArgMap.try_emplace(sKey, sValue); // TODO: insert_or_assign
 	};
 };
 
-CCmdArgs::CCmdArgs(int anArgs, char **asvArg)
+CStartupArgs::CStartupArgs(int anArgs, char **asvArg)
 {
 	char *sKey{nullptr};
 	char *sValue{nullptr};
 	
-	msArgs = "";
+	msString = "";
 	
 	for(int i = 0; i < anArgs; ++i)
 	{
@@ -94,26 +94,38 @@ CCmdArgs::CCmdArgs(int anArgs, char **asvArg)
 				msArgs += " ";
 		};
 		
-		mvArgs.try_emplace(sKey, sValue);
+		mArgMap.try_emplace(sKey, sValue);
 	};
 };
 
-CCmdArgs::~CCmdArgs() = default;
-
-int CCmdArgs::GetCount() const
+bool CStartupArgs::Contains(const char *asKey) const
 {
-	return mvArgs.size();
-};
-
-const char *CCmdArgs::GetAt(int anIndex) const
-{
-	if(anIndex < 0 || anIndex >= GetCount())
-		return nullptr; // TODO: return "";?
+	auto SearchResult{mArgMap.find(asKey)};
 	
-	return mvArgs[anIndex];
+	if(SearchResult != mArgMap.end())
+		//return SearchResult - mArgMap.begin(); // std::distance(mArgMap.begin(), SearchResult);
+		return true;
+	
+	//return -1;
+	return false;
 };
 
-const char *CCmdArgs::ToString() const
+int CStartupArgs::GetCount() const
 {
-	return msArgs.c_str(); // TODO
+	return mArgMap.size();
+};
+
+const char *CStartupArgs::Get(const char *asKey) const
+{
+	auto SearchResult{mArgMap.find(asKey)};
+	
+	if(SearchResult != mArgMap.end())
+		return SearchResult->second.c_str();
+	
+	return "";
+};
+
+const char *CStartupArgs::ToString() const
+{
+	return msArgs.c_str();
 };
