@@ -10,13 +10,15 @@
 
 /// @file
 
+#include <sstream>
+
 #include "CmdArgs.hpp"
 
 CCmdArgs::CCmdArgs(const char *asArgs)
 {
 	msArgs = asArgs;
 	
-	std::stringstream sStream{asArgs};
+	std::istringstream sStream{asArgs};
 	tString sToken{""};
 	tStringVec vTokens{};
 	
@@ -43,58 +45,21 @@ CCmdArgs::CCmdArgs(const char *asArgs)
 	// "blah.exe -blah +blah =crashit ;boom #3-1 -arg 20 +arg 30"
 	// blah.exe = [0]
 	
-	tString sKey{""};
-	tString sValue{""};
-	
-	for(auto It : vTokens)
-	{
-		sKey = "";
-		sValue = "";
-		
-		// Check if arg is a key
-		if(It[0] == '-' || It[0] == '+')
-		{
-			sKey = It;
-			
-			// Check if value is not another key
-			if(++It[0] != '-' && ++It[0] != '+')
-				sValue = It++;
-		};
-		
-		if(!sKey.empty())
-			mvArgs.try_emplace(sKey, sValue); // TODO: insert_or_assign
-	};
+	mvArgs = vTokens;
 };
 
 CCmdArgs::CCmdArgs(int anArgs, char **asvArg)
 {
-	char *sKey{nullptr};
-	char *sValue{nullptr};
-	
 	msArgs = "";
 	
 	for(int i = 0; i < anArgs; ++i)
 	{
-		sKey = asvArg[i];
+		mvArgs.emplace_back(asvArg[i]);
+		
 		msArgs += asvArg[i];
 		
-		++i;
-		
-		// Check for key-value pair
-		if(sKey[0] == '-' || sKey[0] == '+')
-		{
-			sValue = asvArg[i];
-			
+		if((i + 1) < anArgs)
 			msArgs += " ";
-			msArgs += asvArg[i];
-			
-			++i;
-			
-			if(i < anArgs)
-				msArgs += " ";
-		};
-		
-		mvArgs.try_emplace(sKey, sValue);
 	};
 };
 
@@ -110,10 +75,10 @@ const char *CCmdArgs::GetAt(int anIndex) const
 	if(anIndex < 0 || anIndex >= GetCount())
 		return nullptr; // TODO: return "";?
 	
-	return mvArgs[anIndex];
+	return mvArgs[anIndex].c_str();
 };
 
 const char *CCmdArgs::ToString() const
 {
-	return msArgs.c_str(); // TODO
+	return msArgs.c_str();
 };
