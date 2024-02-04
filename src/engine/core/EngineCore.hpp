@@ -18,10 +18,6 @@
 
 #include "CmdArgs.hpp"
 
-struct IEngineExecMode;
-struct INetwork;
-struct IPhysics;
-struct IScript;
 //class CTimer;
 class CCoreEnv;
 
@@ -49,11 +45,6 @@ public:
 	
 	void RequestClose() override {mbCloseRequested = true;}
 private:
-	bool InitPhysics();
-	bool InitNetworking();
-	bool InitScripting();
-	
-	std::unique_ptr<IEngineExecMode> mpExecMode;
 	//std::unique_ptr<CTimer> mpTimer;
 	
 	std::unique_ptr<CCoreEnv> mpEnv;
@@ -73,10 +64,6 @@ private:
 	std::unique_ptr<CLogSinkInternal> mpLogSinkInternal;
 	
 	CStartupArgs mCmdLine;
-	
-	IPhysics *mpPhysics{nullptr};
-	INetwork *mpNetwork{nullptr};
-	IScript *mpScript{nullptr};
 	
 	bool mbCloseRequested{false};
 };

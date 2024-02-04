@@ -27,17 +27,6 @@
 #include "CmdProcessor.hpp"
 #include "ThreadPool.hpp"
 
-#include <network/INetwork.hpp>
-#include <physics/IPhysics.hpp>
-#include <script/IScript.hpp>
-
-#include <server/IEngineServer.hpp>
-#include <client/IEngineClient.hpp>
-
-#include "DedicatedServerMode.hpp"
-#include "DedicatedClientMode.hpp"
-#include "ListenServerMode.hpp"
-
 #include "LogSinkInternal.hpp"
 
 CEngineCore::CEngineCore() = default;
@@ -57,11 +46,6 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	mpLogSinkInternal = std::make_unique<CLogSinkInternal>();
 	mpLogger->AddSink(mpLogSinkInternal.get());
 	
-	mpConfig = std::make_unique<CConfig>();
-	
-	// Do we have any config saved from the last run?
-	if(!mpConfig->LoadFromFile("VEngineLast.ini"))
-		mpConfig->LoadFromFile("VEngineDefault.ini");
 	
 	mpCvarRegistry = std::make_unique<CSysVarRegistry>();
 	mpCmdRegistry = std::make_unique<CSysCmdRegistry>();
@@ -71,56 +55,10 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	// Initialize the thread pool (worker threads)
 	mpThreadPool = std::make_unique<CThreadPool>(atoi(mpConfig->GetString("General:WorkerThreads")));
 	
-	//if(!InitPhysics())
-		//return false;
-	
-	bool bUseNetworking{false};
-	
-	// TODO
-	bUseNetworking = true;
-	
-	if(bUseNetworking)
-		if(!InitNetworking())
-			return false;
-	//else
-		//mpNetwork = new CNetworkNull(); // TODO
-	
-	if(!InitScripting())
-		return false;
-	
 	mpEnv = std::make_unique<CCoreEnv>(this, nullptr, mpMemoryManager.get(), mpLogger.get(), mpConfig.get(), mpCvarRegistry.get(), mpCmdRegistry.get(), mpCmdProcessor.get(), mpPhysics, mpNetwork);
 	
 	// TODO: refactor this!!
 	
-	switch(aInitParams.ExecMode)
-	{
-	case Mode::ListenServer:
-		mpExecMode = std::make_unique<CListenServerMode>(new CDedicatedServerMode(), new CDedicatedClientMode()); // TODO: bad
-		
-		if(!mpNetwork->StartServer(nServerPort))
-			return false;
-	
-		if(!mpNetwork->StartClient())
-			return false;
-		
-		break;
-	case Mode::DedicatedServer:
-		mpExecMode = std::make_unique<CDedicatedServerMode>();
-		
-		if(!mpNetwork->StartServer(nServerPort))
-			return false;
-		
-		break;
-	case Mode::DedicatedClient:
-		mpExecMode = std::make_unique<CDedicatedClientMode>();
-		
-		if(!mpNetwork->StartClient())
-			return false;
-		
-		break;
-	};
-	
-	mpExecMode->Init(mpEnv.get());
 	
 	mpScript->CallFunc("OnStart");
 	
@@ -132,21 +70,7 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 void CEngineCore::Shutdown()
 {
 	mpScript->CallFunc("OnExit");
-	mpExecMode->Shutdown();
 	
-	// TODO
-	
-	//if(mpPhysics)
-		//mpPhysics->Shutdown();
-	
-	if(mpNetwork)
-		mpNetwork->Shutdown();
-	
-	if(mpScript)
-		mpScript->Shutdown();
-	
-	mpConfig->SaveToFile("VEngineLast.ini"); // TODO: shouldn't it be above the call to execution mode?
-	mpLogger->RemoveSink(mpLogSinkInternal.get());
 };
 
 bool CEngineCore::Frame()
@@ -180,72 +104,6 @@ bool CEngineCore::Frame()
 	//mpExecMode->Render();
 	
 	//mpExecMode->FrameEnd(); // mpEventDispatcher->DispatchEvent(Event::FrameEnd);
-	
-	return true;
-};
-
-bool CEngineCore::InitPhysics()
-{
-	static konbini::shared_lib PhysicsLib("VEnginePhysics");
-	
-	if(!PhysicsLib)
-		return false;
-	
-	auto fnGetPhysics{PhysicsLib.getexportfunc<pfnGetPhysics>("GetPhysics")};
-	
-	if(!fnGetPhysics)
-		return false;
-	
-	mpPhysics = fnGetPhysics(IPhysics::Version, *mpEnv);
-	
-	if(!mpPhysics)
-		return false;
-	
-	return true;
-};
-
-bool CEngineCore::InitNetworking()
-{
-	static konbini::shared_lib NetworkLib("VEngineNetwork");
-	
-	if(!NetworkLib)
-		return false;
-	
-	auto fnGetNetwork{NetworkLib.getexportfunc<pfnGetNetwork>("GetNetwork")};
-	
-	if(!fnGetNetwork)
-		return false;
-	
-	mpNetwork = fnGetNetwork(INetwork::Version, *mpEnv);
-	
-	if(!mpNetwork)
-		return false;
-	
-	if(!mpNetwork->Init())
-		return false;
-	
-	return true;
-};
-
-bool CEngineCore::InitScripting()
-{
-	static konbini::shared_lib ScriptLib("VEngineScript");
-	
-	if(!ScriptLib)
-		return false;
-	
-	auto fnGetScript{ScriptLib.getexportfunc<pfnGetScript>("GetScript")};
-	
-	if(!fnGetScript)
-		return false;
-	
-	mpScript = fnGetScript(IScript::Version, *mpEnv);
-	
-	if(!mpScript)
-		return false;
-	
-	if(!mpScript->Init())
-		return false;
 	
 	return true;
 };
