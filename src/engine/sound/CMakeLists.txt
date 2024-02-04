@@ -1,4 +1,4 @@
-project(VEngine-Sound)
+project(vengine-sound)
 
 file(GLOB PROJECT_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp

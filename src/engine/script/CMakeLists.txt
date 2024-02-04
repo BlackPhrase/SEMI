@@ -1,4 +1,4 @@
-project(VEngine-Script)
+project(vengine-script)
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/external/lua53/include
