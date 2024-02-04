@@ -2,18 +2,18 @@
 
 #include "Input.hpp"
 #include "InputEventDispatcher.hpp"
+#include "IInputImpl.hpp"
 
-CInput::CInput(const ICoreEnv &apCoreEnv) : mpCoreEnv(apCoreEnv)
+CInput::CInput(const ICoreEnv &apCoreEnv, CInputEventDispatcher &apEventDispatcher, IInputImpl *apImpl)
+	: mpCoreEnv(apCoreEnv), mpEventDispatcher(apEventDispatcher), mpImpl(apImpl)
 {
-	mpEventDispatcher = std::make_unique<CInputEventDispatcher>();
-	
 	//mpCoreEnv->GetUpdater()->AddUpdateable(this);
 };
 
-CInput::~CInput() //= default;
-{
+CInput::~CInput() = default;
+//{
 	//mpCoreEnv->GetUpdater()->RemoveUpdateable(this);
-};
+//};
 
 void CInput::Update()
 {
@@ -23,36 +23,24 @@ void CInput::Update()
 	// TODO: if pressed then mark it
 	// TODO: if unpressed then unmark it
 	
-	mpImpl->Update(mvPressed);
-	
-	// Copy our pressed keys to previously pressed
-	for(auto i = 0; i < sizeof(mbPressed); ++i)
-		mvOldPressed[i] = mvPressed[i];
+	if(mpImpl)
+		mpImpl->Update(mvKeyStates);
 };
 
 void CInput::AddEventListener(IInputEventListener *apListener)
 {
-	mpEventDispatcher->RemoveListener(apListener);
+	mpEventDispatcher.get().RemoveListener(apListener);
 };
 
 void CInput::RemoveEventListener(IInputEventListener *apListener)
 {
-	mpEventDispatcher->RemoveListener(apListener);
+	mpEventDispatcher.get().RemoveListener(apListener);
 };
 
-bool CInput::IsKeyPressed(KeyCode anKey) const
+void CInput::KeyEvent(KeyCode aeKey, bool abDown)
 {
-	// Wasn't pressed the previous frame, became pressed
-	return !mvOldPressed[anKey] && mvPressed[anKey];
-};
-
-bool CInput::IsKeyReleased(KeyCode anKey) const
-{
-	// Was pressed the previous frame, not anymore
-	return mvOldPressed[anKey] && !mvPressed[anKey];
-};
-
-bool CInput::IsKeyDown(KeyCode anKey) const
-{
-	return mvPressed[anKey];
+	if(abDown)
+		mpEventDispatcher.get().KeyPressed(aeKey);
+	else
+		mpEventDispatcher.get().KeyReleased(aeKey);
 };

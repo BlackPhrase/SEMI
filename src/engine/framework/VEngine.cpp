@@ -12,12 +12,18 @@
 
 #include "VEngine.hpp"
 
+#include <konbini/shared_lib.hpp>
+
+#include <core/IEngineCore.hpp>
+
 #include <network/INetwork.hpp>
 #include <physics/IPhysics.hpp>
 #include <script/IScript.hpp>
 
 #include <server/IEngineServer.hpp>
 #include <client/IEngineClient.hpp>
+
+#include "Config.hpp"
 
 #include "DedicatedServerMode.hpp"
 #include "DedicatedClientMode.hpp"
@@ -30,13 +36,20 @@ CVEngine::~CVEngine()
 
 bool CVEngine::Init(const InitProps &aInitProps)
 {
-	// TODO: load and init the core module here
-	
 	mpConfig = std::make_unique<CConfig>();
 	
 	// Do we have any config saved from the last run?
 	if(!mpConfig->LoadFromFile("VEngineLast.ini"))
 		mpConfig->LoadFromFile("VEngineDefault.ini");
+	
+	IEngineCore::InitParams CoreInitProps{};
+	
+	if(!InitCore(CoreInitProps))
+		return false;
+	
+	//using namespace std::chrono_literals;
+	
+	//mpTimer = std::make_unique<CTimer>(500ms); // TODO: THAT'S TOOO MUUUUUUUUUUUUUUUUUUUUUUUUUUUUCCH
 	
 	//if(!InitPhysics())
 		//return false;
@@ -71,12 +84,39 @@ bool CVEngine::Init(const InitProps &aInitProps)
 	};
 	
 	mpExecMode->Init(mpEnv.get());
+	
+	//mpTimer->SetCallback([this](){mpExecMode->Frame();});
+	
 	return true;
 };
 
 void CVEngine::Frame()
 {
+	if(mbCloseRequested)
+		return false;
 	
+	//mpExecMode->FrameBegin(); // mpEventDispatcher->DispatchEvent(Event::FrameBegin);
+	
+	mpCore->Frame(); // TODO: mpCmdProcessor->ExecPending();?
+	
+	if(mpNetwork)
+		mpNetwork->Update();
+	
+	//mpTimer->Tick();
+	
+	//if(mpTimer->WantUpdate())
+	//{
+		//mpExecMode->Frame();
+	//};
+	
+	//mpExecMode->HandleInput();
+	
+	mpExecMode->Frame(0.1f);
+	
+	//mpExecMode->Render();
+	
+	//mpExecMode->FrameEnd(); // mpEventDispatcher->DispatchEvent(Event::FrameEnd);
+	return true;
 };
 
 void CVEngine::Shutdown()
@@ -93,10 +133,32 @@ void CVEngine::Shutdown()
 		mpScript->Shutdown();
 	
 	mpConfig->SaveToFile("VEngineLast.ini"); // TODO: shouldn't it be above the call to execution mode?
-	mpLogger->RemoveSink(mpLogSinkInternal);
 };
 
-bool CEngineCore::InitPhysics()
+bool CVEngine::InitCore(const IEngineCore::InitParams &aInitProps)
+{
+	static konbini::shared_lib CoreLib("VEngineCore");
+	
+	if(!CoreLib)
+		return false;
+	
+	auto fnGetVEngineCore{CoreLib.getexportfunc<pfnGetVEngineCore>("GetVEngineCore")};
+	
+	if(!fnGetVEngineCore)
+		return false;
+	
+	mpCore = fnGetVEngineCore(IEngineCore::Version);
+	
+	if(!mpCore)
+		return false;
+	
+	if(!mpCore->Init(aInitProps))
+		return false;
+	
+	return true;
+};
+
+bool CVEngine::InitPhysics()
 {
 	static konbini::shared_lib PhysicsLib("VEnginePhysics");
 	
@@ -116,7 +178,7 @@ bool CEngineCore::InitPhysics()
 	return true;
 };
 
-bool CEngineCore::InitNetworking()
+bool CVEngine::InitNetworking()
 {
 	static konbini::shared_lib NetworkLib("VEngineNetwork");
 	
@@ -139,7 +201,7 @@ bool CEngineCore::InitNetworking()
 	return true;
 };
 
-bool CEngineCore::InitScripting()
+bool CVEngine::InitScripting()
 {
 	static konbini::shared_lib ScriptLib("VEngineScript");
 	

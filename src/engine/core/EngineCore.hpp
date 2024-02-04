@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2017-2019, 2023 BlackPhrase
+ * Copyright 2017-2019, 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -18,16 +18,16 @@
 
 #include "CmdArgs.hpp"
 
-//class CTimer;
 class CCoreEnv;
 
 class CSystem;
 class CMemoryManager;
 class CLogger;
-class CConfig;
+
 class CSysVarRegistry;
 class CSysCmdRegistry;
 class CCmdProcessor;
+
 class CThreadPool;
 
 class CLogSinkInternal;
@@ -42,17 +42,12 @@ public:
 	void Shutdown() override;
 	
 	bool Frame() override;
-	
-	void RequestClose() override {mbCloseRequested = true;}
 private:
-	//std::unique_ptr<CTimer> mpTimer;
-	
 	std::unique_ptr<CCoreEnv> mpEnv;
 	
 	std::unique_ptr<CSystem> mpSystem;
 	std::unique_ptr<CMemoryManager> mpMemoryManager;
 	std::unique_ptr<CLogger> mpLogger;
-	std::unique_ptr<CConfig> mpConfig;
 	
 	std::unique_ptr<CSysVarRegistry> mpVarRegistry;
 	std::unique_ptr<CSysCmdRegistry> mpCmdRegistry;
@@ -64,6 +59,4 @@ private:
 	std::unique_ptr<CLogSinkInternal> mpLogSinkInternal;
 	
 	CStartupArgs mCmdLine;
-	
-	bool mbCloseRequested{false};
 };

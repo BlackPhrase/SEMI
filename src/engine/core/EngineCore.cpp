@@ -12,8 +12,6 @@
 
 #include <cstdlib>
 
-#include <konbini/shared_lib.hpp>
-
 #include "EngineCore.hpp"
 #include "CoreEnv.hpp"
 //#include "Timer.hpp"
@@ -21,7 +19,7 @@
 #include "System.hpp"
 #include "MemoryManager.hpp"
 #include "Logger.hpp"
-#include "Config.hpp"
+
 #include "SysVarRegistry.hpp"
 #include "SysCmdRegistry.hpp"
 #include "CmdProcessor.hpp"
@@ -62,7 +60,6 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	
 	mpScript->CallFunc("OnStart");
 	
-	//mpTimer->SetCallback([this](){mpExecMode->Frame();});
 	
 	return true;
 };
@@ -71,15 +68,11 @@ void CEngineCore::Shutdown()
 {
 	mpScript->CallFunc("OnExit");
 	
+	mpLogger->RemoveSink(mpLogSinkInternal);
 };
 
 bool CEngineCore::Frame()
 {
-	if(mbCloseRequested)
-		return false;
-	
-	//mpExecMode->FrameBegin(); // mpEventDispatcher->DispatchEvent(Event::FrameBegin);
-	
 	mpCmdProcessor->ExecPending();
 	
 	if(mpNetwork)
@@ -90,20 +83,6 @@ bool CEngineCore::Frame()
 	
 	mpScript->CallFunc("OnFrame");
 	
-	//mpTimer->Tick();
-	
-	//if(mpTimer->WantUpdate())
-	//{
-		//mpExecMode->Frame();
-	//};
-	
-	//mpExecMode->HandleInput();
-	
-	mpExecMode->Frame(0.1f);
-	
-	//mpExecMode->Render();
-	
-	//mpExecMode->FrameEnd(); // mpEventDispatcher->DispatchEvent(Event::FrameEnd);
 	
 	return true;
 };

@@ -12,6 +12,9 @@
 
 #pragma once
 
+//class CTimer;
+class CConfig;
+
 struct IEngineExecMode;
 
 struct INetwork;
@@ -25,16 +28,28 @@ public:
 	
 	///
 	bool Init(const InitProps &aInitProps) override;
+	
+	void RequestClose() override {mbCloseRequested = true;}
 private:
 	void Shutdown();
+	
+	bool InitCore(const IEngineCore::InitParams &aInitProps);
 	
 	bool InitPhysics();
 	bool InitNetworking();
 	bool InitScripting();
 private:
+	//std::unique_ptr<CTimer> mpTimer;
+	
+	std::unique_ptr<CConfig> mpConfig;
+	
 	std::unique_ptr<IEngineExecMode> mpExecMode;
+	
+	IEngineCore *mpCore{nullptr};
 	
 	IPhysics *mpPhysics{nullptr};
 	INetwork *mpNetwork{nullptr};
 	IScript *mpScript{nullptr};
+	
+	bool mbCloseRequested{false};
 };
