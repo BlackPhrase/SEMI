@@ -23,11 +23,13 @@ class CSysCmdRegistry;
 class CSystem : public ISystem
 {
 public:
-	void AddLogSink(ILogSink *apSink) override;
-	void RemoveLogSink(ILogSink *apSink) override;
+	void AddMessageSink(IMessageSink *apSink) override;
+	void RemoveMessageSink(IMessageSink *apSink) override;
+	
+	void Quit(int anStatusCode = 0) override;
 	
 	bool AddCmd(const char *asName, pfnCmdCallback afnCallback, const char *asDescription) override;
-	//bool RegisterCmd(ISysCmd *apCmd) override;
+	bool RegisterCmd(ISysCmd *apCmd) override;
 	bool RemoveCmd(const char *asName) override;
 	
 	//ISysCmd *FindCmd(const char *asName) const override;
@@ -38,7 +40,7 @@ public:
 	
 	ICvar *FindVar(const char *asName) const override;
 	
-	ICmdArgs *GetStartupArgs() const override {return mpStartupArgs;}
+	IStartupArgs *GetStartupArgs() const override {return mpStartupArgs;}
 private:
 	CCmdArgs *mpStartupArgs{nullptr};
 	CLogger *mpLogger{nullptr};

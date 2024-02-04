@@ -10,10 +10,12 @@
 
 /// @file
 
+#include <konbini/shared_lib.hpp>
+
+#include <client/IEngineClient.hpp>
+
 #include "DedicatedClientMode.hpp"
 //#include "ModuleLoader.hpp"
-#include "client/IEngineClient.hpp"
-#include "shiftutil/shared_lib.hpp"
 
 CDedicatedClientMode::CDedicatedClientMode() = default;
 CDedicatedClientMode::~CDedicatedClientMode() = default;
@@ -26,10 +28,10 @@ void CDedicatedClientMode::Init(ICoreEnv *apCoreEnv)
 	
 	//mpEngClient = EngClientFactory->GetInterface<IEngineClient>(IEngineClient::Version);
 	
-	static shiftutil::shared_lib EngineClientLib("VEngineClient");
+	static konbini::shared_lib EngineClientLib("VEngineClient");
 	
-	//if(!EngineClientLib)
-		//return;
+	if(!EngineClientLib)
+		return;
 	
 	auto fnGetEngineClient{EngineClientLib.getexportfunc<pfnGetEngineClient>("GetEngineClient")};
 	

@@ -13,10 +13,10 @@
 
 #pragma once
 
-#include <string>
+#include <konbini/shared_lib.hpp>
 
-#include "konbini/shared_lib.hpp"
-#include "vengine/IEngineModule.hpp"
+#include <CommonTypes.hpp>
+#include <IEngineModule.hpp>
 
 //struct IEngineModule;
 

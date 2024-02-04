@@ -13,7 +13,7 @@
 #include <cstdio>
 
 #include "CmdProcessor.hpp"
-#include "CmdRegistry.hpp"
+#include "SysCmdRegistry.hpp"
 #include "CmdArgs.hpp"
 
 CCmdProcessor::CCmdProcessor(CCmdRegistry *apCmdRegistry) : mpCmdRegistry(apCmdRegistry){}

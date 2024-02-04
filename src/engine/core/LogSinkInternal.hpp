@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-#include "core/ILogger.hpp"
+#include <core/ILogger.hpp>
 
 class CLogSinkInternal final : public ILogSink
 {

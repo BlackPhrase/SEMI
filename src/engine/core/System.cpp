@@ -10,11 +10,18 @@
 
 /// @file
 
+#include <core/IStartupArgs.hpp>
+
 #include "System.hpp"
 #include "Logger.hpp"
 #include "CmdProcessor.hpp"
 #include "SysVarRegistry.hpp"
 #include "SysCmdRegistry.hpp"
+
+void CSystem::Quit(int anStatusCode)
+{
+	//GetRuntime().Quit(anStatusCode);
+};
 
 void CSystem::AddLogSink(ILogSink *apSink)
 {

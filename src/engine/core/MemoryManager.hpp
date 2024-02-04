@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "core/IMemoryManager.hpp"
+#include <core/IMemoryManager.hpp>
 
 class CMemoryManager final : public IMemoryManager
 {

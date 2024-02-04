@@ -25,7 +25,10 @@ ISysVar *CCvarRegistry::Add(const char *asName, const char *asDefValue, const ch
 	auto pVar{Find(asName)}; // TODO
 	
 	if(pVar)
+	{
+		mpSystem->Warning("Tried to add a system variable \"{}\", which is already registered!", asName);
 		return pVar;
+	};
 	
 	//return mvVars.emplace_back(asName, asDefValue, asDescription);
 	pVar = new CSysVar(asName, asDefValue, asDescription); // TODO: release
@@ -40,7 +43,7 @@ bool CCvarRegistry::Register(ISysVar *apVar)
 	// Check if another cvar with the same name already registered
 	if(Find(sName))
 	{
-		mpSystem->Error("Can't register a system variable \"{}\", already registered!", sName);
+		mpSystem->Error("Can't register a system variable \"{}\" - already registered!", sName);
 		return false;
 	};
 	

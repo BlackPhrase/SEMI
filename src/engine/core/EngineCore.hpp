@@ -14,7 +14,9 @@
 
 #include <memory>
 
-#include "core/IEngineCore.hpp"
+#include <core/IEngineCore.hpp>
+
+#include "CmdArgs.hpp"
 
 struct IEngineExecMode;
 struct INetwork;
@@ -22,11 +24,13 @@ struct IPhysics;
 struct IScript;
 //class CTimer;
 class CCoreEnv;
+
+class CSystem;
 class CMemoryManager;
 class CLogger;
 class CConfig;
-class CCvarRegistry;
-class CCmdRegistry;
+class CSysVarRegistry;
+class CSysCmdRegistry;
 class CCmdProcessor;
 class CThreadPool;
 
@@ -54,18 +58,21 @@ private:
 	
 	std::unique_ptr<CCoreEnv> mpEnv;
 	
+	std::unique_ptr<CSystem> mpSystem;
 	std::unique_ptr<CMemoryManager> mpMemoryManager;
 	std::unique_ptr<CLogger> mpLogger;
 	std::unique_ptr<CConfig> mpConfig;
 	
-	std::unique_ptr<CCvarRegistry> mpCvarRegistry;
-	std::unique_ptr<CCmdRegistry> mpCmdRegistry;
+	std::unique_ptr<CSysVarRegistry> mpVarRegistry;
+	std::unique_ptr<CSysCmdRegistry> mpCmdRegistry;
 	
 	std::unique_ptr<CCmdProcessor> mpCmdProcessor;
 	
 	std::unique_ptr<CThreadPool> mpThreadPool;
 	
 	std::unique_ptr<CLogSinkInternal> mpLogSinkInternal;
+	
+	CStartupArgs mCmdLine;
 	
 	IPhysics *mpPhysics{nullptr};
 	INetwork *mpNetwork{nullptr};

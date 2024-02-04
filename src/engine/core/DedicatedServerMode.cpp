@@ -10,10 +10,12 @@
 
 /// @file
 
+#include <konbini/shared_lib.hpp>
+
+#include <server/IEngineServer.hpp>
+
 #include "DedicatedServerMode.hpp"
 //#include "ModuleLoader.hpp"
-#include "server/IEngineServer.hpp"
-#include "shiftutil/shared_lib.hpp"
 
 CDedicatedServerMode::CDedicatedServerMode() = default;
 CDedicatedServerMode::~CDedicatedServerMode() = default;
@@ -26,10 +28,10 @@ void CDedicatedServerMode::Init(ICoreEnv *apCoreEnv)
 	
 	//mpEngServer = EngServerFactory->GetInterface<IEngineServer>(IEngineServer::Version);
 	
-	static shiftutil::shared_lib EngineServerLib("VEngineServer");
+	static konbini::shared_lib EngineServerLib("VEngineServer");
 	
-	//if(!EngineServerLib)
-		//return;
+	if(!EngineServerLib)
+		return;
 	
 	auto fnGetEngineServer{EngineServerLib.getexportfunc<pfnGetEngineServer>("GetEngineServer")};
 	

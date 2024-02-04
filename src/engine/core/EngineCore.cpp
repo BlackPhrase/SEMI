@@ -12,25 +12,27 @@
 
 #include <cstdlib>
 
-#include "konbini/shared_lib.hpp"
+#include <konbini/shared_lib.hpp>
 
 #include "EngineCore.hpp"
 #include "CoreEnv.hpp"
 //#include "Timer.hpp"
+
+#include "System.hpp"
 #include "MemoryManager.hpp"
 #include "Logger.hpp"
 #include "Config.hpp"
-#include "CvarRegistry.hpp"
-#include "CmdRegistry.hpp"
+#include "SysVarRegistry.hpp"
+#include "SysCmdRegistry.hpp"
 #include "CmdProcessor.hpp"
 #include "ThreadPool.hpp"
 
-#include "network/INetwork.hpp"
-#include "physics/IPhysics.hpp"
-#include "script/IScript.hpp"
+#include <network/INetwork.hpp>
+#include <physics/IPhysics.hpp>
+#include <script/IScript.hpp>
 
-#include "server/IEngineServer.hpp"
-#include "client/IEngineClient.hpp"
+#include <server/IEngineServer.hpp>
+#include <client/IEngineClient.hpp>
 
 #include "DedicatedServerMode.hpp"
 #include "DedicatedClientMode.hpp"
@@ -47,6 +49,8 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	
 	//mpTimer = std::make_unique<CTimer>(500ms); // TODO: THAT'S TOOO MUUUUUUUUUUUUUUUUUUUUUUUUUUUUCCH
 	
+	mpSystem = std::make_unique<CSystem>();
+	
 	mpMemoryManager = std::make_unique<CMemoryManager>();
 	
 	mpLogger = std::make_unique<CLogger>();
@@ -55,12 +59,12 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	
 	mpConfig = std::make_unique<CConfig>();
 	
-	// Do we have any last config saved?
+	// Do we have any config saved from the last run?
 	if(!mpConfig->LoadFromFile("VEngineLast.ini"))
 		mpConfig->LoadFromFile("VEngineDefault.ini");
 	
-	mpCvarRegistry = std::make_unique<CCvarRegistry>();
-	mpCmdRegistry = std::make_unique<CCmdRegistry>();
+	mpCvarRegistry = std::make_unique<CSysVarRegistry>();
+	mpCmdRegistry = std::make_unique<CSysCmdRegistry>();
 	
 	mpCmdProcessor = std::make_unique<CCmdProcessor>(mpCmdRegistry.get());
 	
@@ -192,7 +196,7 @@ bool CEngineCore::InitPhysics()
 	if(!fnGetPhysics)
 		return false;
 	
-	mpPhysics = fnGetPhysics(IPhysics::Version);
+	mpPhysics = fnGetPhysics(IPhysics::Version, *mpEnv);
 	
 	if(!mpPhysics)
 		return false;
@@ -212,7 +216,7 @@ bool CEngineCore::InitNetworking()
 	if(!fnGetNetwork)
 		return false;
 	
-	mpNetwork = fnGetNetwork(INetwork::Version);
+	mpNetwork = fnGetNetwork(INetwork::Version, *mpEnv);
 	
 	if(!mpNetwork)
 		return false;
@@ -235,7 +239,7 @@ bool CEngineCore::InitScripting()
 	if(!fnGetScript)
 		return false;
 	
-	mpScript = fnGetScript(IScript::Version);
+	mpScript = fnGetScript(IScript::Version, *mpEnv);
 	
 	if(!mpScript)
 		return false;

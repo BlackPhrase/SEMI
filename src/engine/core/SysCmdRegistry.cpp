@@ -15,16 +15,30 @@
 CSysCmdRegistry::CSysCmdRegistry() = default;
 CSysCmdRegistry::~CSysCmdRegistry() = default;
 
-bool CSysCmdRegistry::Add(const char *asName, pfnCmdCallback afnCallback, const char *asDescription)
+bool CSysCmdRegistry::Add(const char *asName, pfnSysCmdCallback afnCallback, const char *asDescription)
 {
 	if(Find(asName))
 	{
-		mpSystem->Error("Can't add a system command \"{}\", already present!", asName);
+		mpSystem->Error("Can't add a system command \"{}\" - already present!", asName);
 		return false;
 	};
 	
 	auto pCmd{new CSysCmd(asName, afnCallback, asDescription)};
 	mvCmds.push_back(pCmd);
+	return true;
+};
+
+bool CSysCmdRegistry::Register(ISysCmd *apCmd)
+{
+	auto sName{apCmd->GetName()};
+	
+	if(Find(sName)
+	{
+		mpSystem->Error("Can't register a system command \"{}\" - already present!", sName);
+		return false;
+	};
+	
+	// TODO
 	return true;
 };
 

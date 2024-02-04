@@ -10,14 +10,15 @@
 
 /// @file
 
-#include "CommonTypes.hpp"
+#include <CommonTypes.hpp>
+
 #include "EngineCore.hpp"
 
-C_EXPORT IEngineCore *GetEngineCore(int version)
+C_EXPORT IEngineCore *GetVEngineCore(int anVersion)
 {
-	if(version == IEngineCore::Version)
+	if(anVersion == IEngineCore::Version)
 	{
-		static CEngineCore Engine;
-		return &Engine;
+		static CEngineCore EngineCore;
+		return &EngineCore;
 	};
 };

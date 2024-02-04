@@ -50,6 +50,7 @@ public:
 	~CSysCmdRegistry();
 	
 	bool Add(const char *asName, pfnSysCmdCallback afnCallback, const char *asDescription); //override;
+	bool Register(ISysCmd *apCmd);
 	bool Remove(const char *asName); //override;
 	
 	CSysCmd *Find(const char *asName) const;

@@ -23,8 +23,8 @@ void CListenServerMode::Init(ICoreEnv *apCoreEnv)
 
 void CListenServerMode::Shutdown()
 {
-	mpDedicatedServer->Shutdown();
 	mpDedicatedClient->Shutdown();
+	mpDedicatedServer->Shutdown();
 };
 
 void CListenServerMode::Frame(float afTimeStep)

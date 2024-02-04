@@ -13,10 +13,7 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
-#include <string_view>
-
+#include <CommonTypes.hpp>
 #include <core/IEngineModuleContainer.hpp>
 
 struct SModuleHandle;

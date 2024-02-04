@@ -12,12 +12,11 @@
 
 #pragma once
 
-#include <deque>
-#include <string>
+#include <CommonTypes.hpp>
+#include <core/ICmdProcessor.hpp>
 
-#include "core/ICmdProcessor.hpp"
+class CSysCmdRegistry;
 
-class CCmdRegistry;
 
 using tStringDeque = std::deque<std::string>;
 
