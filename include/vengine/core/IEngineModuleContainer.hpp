@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2023 BlackPhrase
+ * Copyright 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -9,7 +9,7 @@
 */
 
 /// @file
-/// @brief engine module manager interface
+/// @brief engine module container interface
 
 #pragma once
 
@@ -18,7 +18,7 @@ struct IEngineModule;
 struct IEngineModuleManager
 {
 	///
-	virtual bool LoadModule(const char *asName) = 0;
+	virtual bool LoadModule(const char *asName, bool abCritical = false) = 0;
 	
 	///
 	virtual bool UnloadModule(int anIndex) = 0;

@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018-2019, 2023 BlackPhrase
+ * Copyright 2018-2019, 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -13,13 +13,21 @@
 #include "EngineModuleContainer.hpp"
 #include "EngineModule.hpp"
 
-CEngineModuleContainer::CEngineModuleContainer(CModuleLoader &aLoader) : mLoader(aLoader){}
+CEngineModuleContainer::CEngineModuleContainer(const ICoreEnv &aCoreEnv, CModuleLoader &aLoader) : mCoreEnv(aCoreEnv), mLoader(aLoader){}
 
 CEngineModuleContainer::~CEngineModuleContainer() = default;
 
-bool CEngineModuleContainer::LoadModule(const char *asName)
+bool CEngineModuleContainer::LoadModule(const char *asName, bool abCritical)
 {
-	return LoadModule(asName);
+	bool bResult{LoadModule(asName)};
+	
+	if(!bResult)
+		if(abCritical)
+			mCoreEnv.GetSystem()->FatalError("Couldn't load the \"{}\" module!", asName);
+		else
+			mCoreEnv.GetSystem()->Warning("Couldn't load the \"{}\" module!", asName);
+	
+	return bResult;
 };
 
 bool CEngineModuleContainer::UnloadModule(int anIndex)

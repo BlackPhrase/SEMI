@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018-2019, 2023 BlackPhrase
+ * Copyright 2018-2019, 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -16,16 +16,18 @@
 #include <CommonTypes.hpp>
 #include <core/IEngineModuleContainer.hpp>
 
+struct ICoreEnv;
+
 struct SModuleHandle;
 using tModuleHandleVec = std::vector<SModuleHandle*>;
 
 class CEngineModuleContainer final : public IEngineModuleContainer
 {
 public:
-	CEngineModuleContainer();
+	CEngineModuleContainer(const ICoreEnv &aCoreEnv);
 	~CEngineModuleContainer();
 public: // IEngineModuleContainer interface impl
-	bool LoadModule(const char *asName) override;
+	bool LoadModule(const char *asName, bool abCritical = false) override;
 	bool UnloadModule(int anIndex) override;
 	bool ReloadModule(int anIndex) override;
 	
@@ -45,4 +47,6 @@ public: // Other public methods
 	SModuleHandle *GetByName(std::string_view asName) const;
 private:
 	tModuleHandleVec mvModules;
+	
+	const ICoreEnv &mCoreEnv;
 };
