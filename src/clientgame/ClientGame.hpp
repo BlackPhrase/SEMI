@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "clientgame/IClientGame.hpp"
+#include <clientgame/IClientGame.hpp>
 
 class CClientGame final : public IClientGame
 {

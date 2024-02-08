@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018, 2023 BlackPhrase
+ * Copyright 2018, 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -27,10 +27,6 @@ public:
 	IConfig *GetConfig() const override {return mpConfig;}
 	IEngineModuleContainer *GetEngineModuleContainer() const override {return mpEngineModuleContainer;}
 	
-	//IPhysics *GetPhysics() const override {return mpPhysics;}
-	//INetwork *GetNetwork() const override {return mpNetwork;}
-	//IScript *GetScript() const override {return mpScript;}
-	
 	void Stop() override;
 	
 	//void SendCmd(const char *asText) override;
@@ -41,8 +37,4 @@ private:
 	IMemoryManager *mpMemoryManager{nullptr};
 	IConfig *mpConfig{nullptr};
 	IEngineModuleContainer *mpEngineModuleContainer{nullptr};
-	
-	//IPhysics *mpPhysics{nullptr};
-	//INetwork *mpNetwork{nullptr};
-	//IScript *mpScript{nullptr};
 };

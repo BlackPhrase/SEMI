@@ -1,6 +1,6 @@
-# V-Engine
+# SEMI Engine (aka V-Engine)
 
-[![Build Status](https://travis-ci.org/BlackPhrase/V-Engine.svg)](https://travis-ci.org/BlackPhrase/V-Engine)
+[![Build Status](https://travis-ci.org/BlackPhrase/SEMI.svg)](https://travis-ci.org/BlackPhrase/SEMI)
 
 ![V-Engine Logo](docs/venginearch.png?raw=true "V-Engine Logo")
 

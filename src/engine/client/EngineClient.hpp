@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include "client/IEngineClient.hpp"
+#include <client/IEngineClient.hpp>
 
 struct IRenderWindow;
 struct IInput;

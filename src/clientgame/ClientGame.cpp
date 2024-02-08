@@ -13,10 +13,10 @@
 
 #include "ClientGame.hpp"
 
-#include "client/IClientEnv.hpp"
+#include <client/IClientEnv.hpp>
 
-#include "core/ICvar.hpp"
-#include "core/ICvarRegistry.hpp"
+#include <core/ICvar.hpp>
+#include <core/ISystem.hpp>
 
 CClientGame::CClientGame() = default;
 CClientGame::~CClientGame() = default;

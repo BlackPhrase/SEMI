@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include "server/IEngineServer.hpp"
+#include <server/IEngineServer.hpp>
 
 struct IGame;
 class CEngineEnv;

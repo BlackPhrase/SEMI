@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018-2019, 2023 BlackPhrase
+ * Copyright 2018-2019, 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -11,11 +11,11 @@
 /// @file
 
 #include <vengine/CommonTypes.hpp>
-#include <vengine/IEngineModule.hpp>
+#include <vengine/BaseEngineModule.hpp>
 
 #include "Script.hpp"
 
-class CScriptModule : public IEngineModule
+class CScriptModule : public BaseEngineModule
 {
 public:
 	CScriptModule(const ICoreEnv &aCoreEnv) : mCoreEnv(aCoreEnv){}
@@ -23,6 +23,17 @@ public:
 	
 	bool OnLoad() override
 	{
+		RegisterInterface("VEngineScript", [=, this](int anVersion) -> void* {
+			if(anVersion == IScript::Version)
+			{
+				if(!mpScript)
+					mpScript = new CScript(mCoreEnv);
+				return mpScript;
+			};
+			
+			return nullptr;
+		});
+		
 		return true;
 	};
 	
@@ -35,19 +46,6 @@ public:
 		};
 		
 		return true;
-	};
-	
-	void *GetInterface(const char *asName, int anVersion) const override
-	{
-		if(!strcmp(asName, "VEngineScript"))
-			if(anVersion == IScript::Version)
-			{
-				if(!mpScript)
-					mpScript = new CScript(mCoreEnv);
-				return mpScript;
-			};
-		
-		return nullptr;
 	};
 private:
 	const ICoreEnv &mCoreEnv;

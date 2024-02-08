@@ -22,7 +22,7 @@ public:
 	
 	bool OnLoad() override
 	{
-		RegisterInterface("VEngineClientGame", [](int anVersion){
+		RegisterInterface("VEngineClientGame", [=, this](int anVersion) -> void* {
 			if(anVersion == IClientGame::Version)
 			{
 				if(!mpClientGame)

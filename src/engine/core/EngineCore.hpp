@@ -38,7 +38,7 @@ public:
 	CEngineCore();
 	~CEngineCore();
 	
-	bool Init(const IEngineCore::InitParams &aInitParams) override;
+	bool Init(const IEngineCore::InitProps &aInitProps) override;
 	void Shutdown() override;
 	
 	bool Frame() override;

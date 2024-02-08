@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018-2019, 2023 BlackPhrase
+ * Copyright 2018-2019, 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -16,7 +16,7 @@
 struct ISystem;
 struct IMemoryManager;
 struct IConfig;
-struct IEngineModuleManager;
+struct IEngineModuleContainer;
 //struct IPhysics;
 //struct INetwork;
 //struct IScript;
@@ -33,7 +33,7 @@ struct ICoreEnv
 	virtual IConfig *GetConfig() const = 0;
 	
 	///
-	virtual IEngineModuleManager *GetEngineModuleManager() const = 0;
+	virtual IEngineModuleContainer *GetModuleContainer() const = 0;
 	
 	///
 	//virtual IPhysics *GetPhysics() const = 0;
