@@ -1,7 +1,7 @@
 /*
  * This file is part of V-Engine
  *
- * Copyright 2018-2019, 2023 BlackPhrase
+ * Copyright 2018-2019, 2023-2024 BlackPhrase
  *
  * Licensed under terms of the MIT license
  * See LICENSE.md file for full terms
@@ -15,29 +15,53 @@
 #include <stdexcept>
 
 #include <konbini/shared_lib.hpp>
+
 #include <core/IEngineCore.hpp>
+#include <framework/IVEngine.hpp>
 
-IEngineCore *gpEngine{nullptr};
+IEngineCore *gpCore{nullptr};
+IVEngine *gpEngine{nullptr};
 
-bool Init()
+bool Init(int argc, char **argv)
 {
-	IEngineCore::InitProps VEngineInitProps{};
+	IEngineCore::InitProps CoreInitProps{};
 	
-	VEngineInitProps.meExecMode = IEngineCore::Mode::DedicatedServer;
-	VEngineInitProps.msCmdLine = ""; // TODO
+	CoreInitProps.msCmdLine = ""; // TODO
+	
+	auto pCoreEnv{gpCore->Init(CoreInitProps)};
+	
+	if(!pCoreEnv)
+		return false;
+	
+	//
+	
+	pCoreEnv->GetModuleContainer()->LoadModule("VEngine", true);
+	
+	gpEngine = pCoreEnv->GetModuleContainer()->GetInterface<IVEngine>("IVEngine", IVEngine::Version);
+	
+	if(!gpEngine)
+		return false;
+	
+	//
+	
+	IVEngine::InitProps VEngineInitProps{};
+	
+	VEngineInitProps.meExecMode = IVEngine::ExecMode::DedicatedServer;
 	
 	if(!gpEngine->Init(VEngineInitProps))
 		return false;
+	
+	//
 	
 	return true;
 };
 
 void Run()
 {
-	while(gpEngine->Frame()) // TODO: geez...
+	while(gpCore->Frame()) // TODO: geez...
 		;
 	
-	gpEngine->Shutdown();
+	gpCore->Shutdown();
 };
 
 int main(int argc, char **argv)
@@ -52,17 +76,21 @@ int main(int argc, char **argv)
 	if(!fnGetEngineCore)
 		throw std::runtime_error("Failed to access the engine core export!");
 	
-	auto pEngine{fnGetEngineCore(IEngineCore::Version)};
+	auto pCore{fnGetEngineCore(IEngineCore::Version)};
 	
-	if(!pEngine)
+	if(!pCore)
 		throw std::runtime_error("Failed to acquire the engine core interface!");
 	
-	gpEngine = pEngine;
+	gpCore = pCore;
 	
-	if(!Init())
+	//
+	
+	if(!Init(argc, argv))
 		throw std::runtime_error("Failed to initialize the engine core!");
 	
 	Run();
+	
+	//
 	
 	return EXIT_SUCCESS;
 };
