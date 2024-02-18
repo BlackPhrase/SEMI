@@ -17,6 +17,9 @@
 #include <konbini/shared_lib.hpp>
 
 #include <core/IEngineCore.hpp>
+#include <core/ICoreEnv.hpp>
+#include <core/IEngineModuleContainer.hpp>
+
 #include <framework/IVEngine.hpp>
 
 IEngineCore *gpCore{nullptr};
@@ -24,25 +27,29 @@ IVEngine *gpEngine{nullptr};
 
 bool Init(int argc, char **argv)
 {
+	// Try to initialize the core first
+	
 	IEngineCore::InitProps CoreInitProps{};
 	
-	CoreInitProps.msCmdLine = ""; // TODO
+	//CoreInitProps.msCmdLine = ""; // TODO
+	CoreInitProps.argc = argc;
+	CoreInitProps.argv = argv;
 	
 	auto pCoreEnv{gpCore->Init(CoreInitProps)};
 	
 	if(!pCoreEnv)
 		return false;
 	
-	//
+	// Now we need to load the "framework" module to initialize the rest
 	
 	pCoreEnv->GetModuleContainer()->LoadModule("VEngine", true);
 	
-	gpEngine = pCoreEnv->GetModuleContainer()->GetInterface<IVEngine>("IVEngine", IVEngine::Version);
+	gpEngine = pCoreEnv->GetModuleContainer()->GetInterface<IVEngine>("VEngine", IVEngine::Version);
 	
 	if(!gpEngine)
 		return false;
 	
-	//
+	// Init the framework now
 	
 	IVEngine::InitProps VEngineInitProps{};
 	
@@ -51,8 +58,7 @@ bool Init(int argc, char **argv)
 	if(!gpEngine->Init(VEngineInitProps))
 		return false;
 	
-	//
-	
+	// Done, now we can run it
 	return true;
 };
 
@@ -66,6 +72,8 @@ void Run()
 
 int main(int argc, char **argv)
 {
+	// Try to load the engine core module
+	
 	konbini::shared_lib EngineCoreLib("VEngineCore");
 	
 	if(!EngineCoreLib)
@@ -83,14 +91,15 @@ int main(int argc, char **argv)
 	
 	gpCore = pCore;
 	
-	//
+	// If the attempt was successful, try to initialize it and run
 	
 	if(!Init(argc, argv))
 		throw std::runtime_error("Failed to initialize the engine core!");
 	
 	Run();
 	
-	//
+	// ???
 	
+	// PROFIT!!!
 	return EXIT_SUCCESS;
 };
