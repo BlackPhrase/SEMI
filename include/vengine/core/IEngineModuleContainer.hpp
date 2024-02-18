@@ -15,7 +15,7 @@
 
 struct IEngineModule;
 
-struct IEngineModuleManager
+struct IEngineModuleContainer
 {
 	///
 	virtual bool LoadModule(const char *asName, bool abCritical = false) = 0;

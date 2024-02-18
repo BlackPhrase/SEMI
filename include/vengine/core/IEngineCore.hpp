@@ -13,6 +13,8 @@
 
 #pragma once
 
+struct ICoreEnv;
+
 struct IEngineCore
 {
 	/// Interface version
@@ -32,8 +34,8 @@ struct IEngineCore
 	 * @param InitProps Initialization properties
 	 * @return true if success, false otherwise
 	 */
-	virtual bool Init(const InitProps &aInitProps, ICoreEnv &aCoreEnv) = 0; // TODO: should this return the core environment?
-	//virtual ICoreEnv *Init(const InitProps &aInitProps) = 0;
+	//virtual bool Init(const InitProps &aInitProps, ICoreEnv &aCoreEnv) = 0; // TODO: should this return the core environment?
+	virtual ICoreEnv *Init(const InitProps &aInitProps) = 0;
 	
 	/// Shutdown the core (if initialized)
 	virtual void Shutdown() = 0; // TODO: remove?
