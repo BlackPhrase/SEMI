@@ -96,11 +96,12 @@ void CEngineClient::Shutdown()
 
 void CEngineClient::Frame()
 {
+	//mpEngineEnv->GetCmdProcessor()->AppendText("test");
+	//mpEngineEnv->GetCmdProcessor()->AppendText("unknown-cmd-test");
 	if(mpMainWindow->WantClose())
 		mpCoreEnv->Stop(); //SendCmd("stop"); // quit/exit
 	
-	//mpCoreEnv->GetCmdProcessor()->AppendText("test");
-	//mpCoreEnv->GetCmdProcessor()->AppendText("unknown-cmd-test");
+	mpNetClient->SendConnectionless("127.0.0.1", nDefaultServerPort, "Hello World!");
 	
 	mpMainWindow->Update();
 	//mpInput->Update();

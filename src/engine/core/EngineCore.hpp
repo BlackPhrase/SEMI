@@ -59,4 +59,6 @@ private:
 	std::unique_ptr<CLogSinkInternal> mpLogSinkInternal;
 	
 	CStartupArgs mCmdLine;
+	
+	bool mbInitialized{false};
 };

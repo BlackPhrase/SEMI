@@ -12,6 +12,8 @@
 
 #include <cstdlib>
 
+#include <iostream>
+
 #include "EngineCore.hpp"
 #include "CoreEnv.hpp"
 //#include "Timer.hpp"
@@ -32,6 +34,12 @@ CEngineCore::~CEngineCore() = default;
 
 bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 {
+	if(mbInitialized)
+	{
+		mpSystem->Warning("Tried to double-init the core!"); // TODO: Error?
+		return nullptr;
+	};
+	
 	//using namespace std::chrono_literals;
 	
 	//mpTimer = std::make_unique<CTimer>(500ms); // TODO: THAT'S TOOO MUUUUUUUUUUUUUUUUUUUUUUUUUUUUCCH
@@ -61,19 +69,24 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 
 void CEngineCore::Shutdown()
 {
+	if(!mbInitialized)
+	{
+		std::cerr << "Tried to shutdown the uninitialized core!\n";
+		return;
+	};
+	
 	
 	mpLogger->RemoveSink(mpLogSinkInternal);
 };
 
 bool CEngineCore::Frame()
 {
-	mpCmdProcessor->ExecPending();
-	
-	if(mpNetwork)
+	if(!mbInitialized)
 	{
-		mpNetwork->Update();
-		mpNetwork->ClientSendConnectionless("127.0.0.1", nServerPort, "Hello World!");
+		std::cerr << "Tried to run a frame on the uninitialized core!\n";
+		return false;
 	};
 	
+	mpCmdProcessor->ExecPending();
 	return true;
 };
