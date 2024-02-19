@@ -55,18 +55,12 @@ bool CEngineCore::Init(const IEngineCore::InitParams &aInitParams)
 	
 	mpEnv = std::make_unique<CCoreEnv>(this, nullptr, mpMemoryManager.get(), mpLogger.get(), mpConfig.get(), mpCvarRegistry.get(), mpCmdRegistry.get(), mpCmdProcessor.get(), mpPhysics, mpNetwork);
 	
-	// TODO: refactor this!!
-	
-	
-	mpScript->CallFunc("OnStart");
-	
 	
 	return true;
 };
 
 void CEngineCore::Shutdown()
 {
-	mpScript->CallFunc("OnExit");
 	
 	mpLogger->RemoveSink(mpLogSinkInternal);
 };
@@ -80,9 +74,6 @@ bool CEngineCore::Frame()
 		mpNetwork->Update();
 		mpNetwork->ClientSendConnectionless("127.0.0.1", nServerPort, "Hello World!");
 	};
-	
-	mpScript->CallFunc("OnFrame");
-	
 	
 	return true;
 };

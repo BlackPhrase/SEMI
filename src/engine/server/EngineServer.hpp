@@ -7,6 +7,7 @@
 #include <server/IEngineServer.hpp>
 
 struct IGame;
+struct IScriptVM;
 class CEngineEnv;
 
 class CEngineServer final : public IEngineServer
@@ -25,5 +26,6 @@ private:
 	std::unique_ptr<CEngineEnv> mpEnv;
 	
 	ICoreEnv *mpCoreEnv{nullptr};
+	IScriptVM *mpGlobalScript{nullptr};
 	IGame *mpGame{nullptr};
 };

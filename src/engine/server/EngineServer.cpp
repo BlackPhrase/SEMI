@@ -13,6 +13,8 @@
 #include "core/ICvar.hpp"
 #include "core/ICmdRegistry.hpp"
 
+#include <script/IScript.hpp>
+
 void TestCmd_f(const ICmdArgs &apArgs)
 {
 	printf("TestCmd_f\n");
@@ -38,6 +40,9 @@ bool CEngineServer::Init(ICoreEnv *apCoreEnv)
 	
 	apCoreEnv->GetCvarRegistry()->Add("sv_pure", "1");
 	
+	mpGlobalScript = mpScript->CreateVM();
+	
+	mpGlobalScript->CallFunc("OnStart");
 	printf("\"sv_pure\" is \"%s\"\n", apCoreEnv->GetCvarRegistry()->Find("sv_pure")->GetValue());
 	
 	apCoreEnv->GetCmdRegistry()->Add("test", TestCmd_f);
@@ -46,11 +51,13 @@ bool CEngineServer::Init(ICoreEnv *apCoreEnv)
 
 void CEngineServer::Shutdown()
 {
+	mpGlobalScript->CallFunc("OnExit");
 	mpGame->Shutdown();
 };
 
 void CEngineServer::Frame()
 {
+	mpGlobalScript->CallFunc("OnFrame");
 	mpGame->Frame();
 };
 
