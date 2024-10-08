@@ -11,3 +11,5 @@ add_subdirectory(game)
 #else()
 	add_subdirectory(launcher)
 #endif()
+
+add_subdirectory(editor)
